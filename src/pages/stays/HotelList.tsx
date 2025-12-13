@@ -119,7 +119,7 @@ function Stays() {
                   ))
                 ) : (
                   <div className="text-gray-500 text-center py-6">
-                    No stays found.
+                    No stay found.
                   </div>
                 )}
               </div>

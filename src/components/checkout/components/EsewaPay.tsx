@@ -1,29 +1,75 @@
 import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router-dom";
+import CryptoJS from "crypto-js";
 
-function EsewaPay() {
-  const navigate = useNavigate();
-  return (
-    <div className="flex flex-col gap-3">
-      <div className="flex flex-col gap-2">
-        <span className="text-gray-dark">
-          You will be redirected to your e-Sewa account, Please login and follow
-          the to required process to complete your payment
-        </span>
-        <span className=" text-grey-800">
-          NPR 3485 will be deducted from your account, Please proceed to pay
-          with e-Sewa.{" "}
-        </span>
-      </div>
-      <Button
-        className="text-gray-dark bg-white border-gray border w-fit px-7 !py-5"
-        onClick={() => navigate("../booking-confirmed")}
-      >
-        {" "}
-        Proceed
-      </Button>
-    </div>
-  );
+interface EsewaPayProps {
+  payingAmount?: number;
+}
+
+function EsewaPay({ payingAmount = 0 }: EsewaPayProps) {
+  const submitPayment = () => {
+    if (payingAmount <= 0) {
+      alert("Invalid amount");
+      return;
+    }
+
+    // Constants
+    const serviceCharge = 0;
+    const taxAmount = 0;
+    const deliveryCharge = 0;
+    const productCode = "EPAYTEST";
+    const secretKey = "8gBm/:&EnhH.1/q";
+    const successUrl = "http://localhost:5173/booking-confirmed";
+    const failureUrl = "http://localhost:5173/payment-failed";
+
+    // Derived values
+    const amount = String(payingAmount);
+    const totalAmount = String(
+      payingAmount + serviceCharge + taxAmount + deliveryCharge
+    );
+    const transactionUuid = `TXN_${Date.now()}`;
+
+    // Signature generation
+    const signedFieldNames =
+      "amount,total_amount,transaction_uuid,product_code";
+    const message = `amount=${amount},total_amount=${totalAmount},transaction_uuid=${transactionUuid},product_code=${productCode}`;
+    const hash = CryptoJS.HmacSHA256(message, secretKey);
+    const signature = CryptoJS.enc.Base64.stringify(hash);
+
+    // Payload
+    const payload: Record<string, string> = {
+      amount,
+      tax_amount: String(taxAmount),
+      total_amount: totalAmount,
+      transaction_uuid: transactionUuid,
+      product_code: productCode,
+      product_service_charge: String(serviceCharge),
+      product_delivery_charge: String(deliveryCharge),
+      success_url: successUrl,
+      failure_url: failureUrl,
+      signed_field_names: signedFieldNames,
+      signature,
+    };
+
+    // Create and submit form
+    const form = document.createElement("form");
+    form.method = "POST";
+    form.action = "https://rc-epay.esewa.com.np/api/epay/main/v2/form";
+    form.target = "_blank";
+
+    Object.entries(payload).forEach(([key, value]) => {
+      const input = document.createElement("input");
+      input.type = "hidden";
+      input.name = key;
+      input.value = value;
+      form.appendChild(input);
+    });
+
+    document.body.appendChild(form);
+    form.submit();
+    form.remove(); // ✅ cleanup after submit
+  };
+
+  return <Button onClick={submitPayment}>Pay with eSewa</Button>;
 }
 
 export default EsewaPay;

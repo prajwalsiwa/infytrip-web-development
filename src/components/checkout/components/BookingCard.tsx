@@ -58,7 +58,7 @@ function BookingCard({ hotelDetails }: BookingCardProps) {
   const isPackage = pathname?.includes("package");
 
   const packageCard =
-    pathname?.includes("package") && localStorage.getItem("loginpackageCard");
+    pathname?.includes("package") && localStorage.getItem("packageCard");
 
   useEffect(() => {
     if (packageCard) {

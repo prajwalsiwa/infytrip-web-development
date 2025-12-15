@@ -1,0 +1,1 @@
+rsync -avz --delete dist/ root@144.172.100.18:/var/www/frontend/landing

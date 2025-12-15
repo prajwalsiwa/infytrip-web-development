@@ -21,6 +21,10 @@ import { useLocation } from "react-router-dom";
 import PackageHotelPay from "../PackageCheckout/PackageHotelPay";
 
 const Payments: React.FC = () => {
+  const bookingDetails = useSelector(
+    (state: RootState) => state.stays?.bookingDetail
+  );
+
   const [amount, setAmount] = useState<number>(0);
   const userInfo = useSelector((state: RootState) => state.stays?.userInfo);
 
@@ -46,7 +50,7 @@ const Payments: React.FC = () => {
     {
       value: "esewa",
       imgSrc: esewaLogo,
-      content: <EsewaPay />,
+      content: <EsewaPay payingAmount={bookingDetails?.total_amount} />,
     },
     {
       value: "khalti",

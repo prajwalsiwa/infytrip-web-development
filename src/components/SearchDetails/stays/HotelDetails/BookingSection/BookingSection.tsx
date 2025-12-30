@@ -2,7 +2,10 @@
 import { Button } from "@/components/ui/button";
 import { CheckInOutPicker } from "@/components/ui/check-in-out-picker";
 import { GuestPicker } from "@/components/ui/guest-picker";
-import { useCheckRoomAvailabilityMutation, useContinueBookingMutation } from "@/redux/services/staysApi";
+import {
+  useCheckRoomAvailabilityMutation,
+  useContinueBookingMutation,
+} from "@/redux/services/staysApi";
 import { useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { addDays, format } from "date-fns";
@@ -44,6 +47,11 @@ function BookingSection({
     (detail: any) => detail.room.id === noOfRooms.roomId
   );
 
+  const [dateRange, setDateRange] = useState<DateRange | undefined>({
+    from: addDays(new Date(), 1),
+    to: addDays(new Date(), 2),
+  });
+
   const hotelDetails = useSelector(
     (state: RootState) => state.stays?.hotelDetails
   );
@@ -62,25 +70,29 @@ function BookingSection({
     infants: 0,
   });
 
-  const [checkRoomAvailability] = useCheckRoomAvailabilityMutation()
+  const [checkRoomAvailability] = useCheckRoomAvailabilityMutation();
   const { id } = useParams();
-
   const handleDateChange = (dates: DateRange) => {
+    setDateRange(dates);
+
     setSelectedDates({
-      checkin_date: dates.from ? format(dates?.from, "yyyy-MM-dd") : null,
-      checkout_date: dates.to ? format(dates.to, "yyyy-MM-dd") : null,
+      checkin_date: dates?.from ? format(dates.from, "yyyy-MM-dd") : null,
+      checkout_date: dates?.to ? format(dates.to, "yyyy-MM-dd") : null,
     });
-    checkRoomAvailability({checkin_date:  dates.from ? format(dates?.from, "yyyy-MM-dd") : null ,
-      checkout_date: dates.to ? format(dates.to, "yyyy-MM-dd") : null,
-      property: id,
-      rooms:[]
- })
+
+    if (dates?.from && dates?.to) {
+      checkRoomAvailability({
+        checkin_date: format(dates.from, "yyyy-MM-dd"),
+        checkout_date: format(dates.to, "yyyy-MM-dd"),
+        property: id,
+        rooms: [],
+      });
+    }
   };
 
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const isCheckout = pathname.includes("checkout");
-
 
   const handleGuestChange = (updatedValues: {
     adults: number;
@@ -223,15 +235,9 @@ function BookingSection({
                   <CheckInOutPicker
                     className="!px-0"
                     showLabel={false}
+                    date={dateRange}
+                    setDate={setDateRange}
                     onChange={handleDateChange}
-                    initialDateRange={{
-                      from: selectedDates.checkin_date
-                        ? new Date(selectedDates.checkin_date)
-                        : undefined,
-                      to: selectedDates.checkout_date
-                        ? new Date(selectedDates.checkout_date)
-                        : undefined,
-                    }}
                   />
                   ;
                 </div>
@@ -296,15 +302,17 @@ function BookingSection({
           </div>
         </div>
       )}
-     {totalPrice === 0 && (
-  <div className="mt-2 text-sm text-red-600 text-center">
-    <p>Unfortunately, there are no rooms available at the moment.</p>
-    <p className="mt-1">You cannot proceed with the booking without selecting a room.</p>
-    <div className="flex justify-center mt-2">
-      <span className="text-xl">🚫</span>
-    </div>
-  </div>
-    )}
+      {totalPrice === 0 && (
+        <div className="mt-2 text-sm text-red-600 text-center">
+          <p>Unfortunately, there are no rooms available at the moment.</p>
+          <p className="mt-1">
+            You cannot proceed with the booking without selecting a room.
+          </p>
+          <div className="flex justify-center mt-2">
+            <span className="text-xl">🚫</span>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

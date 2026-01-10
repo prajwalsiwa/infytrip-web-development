@@ -166,7 +166,7 @@ function BookingSection({
     image: hotelDetails?.photo_url,
     dates: `${selectedDates.checkin_date} to ${selectedDates.checkout_date}`,
     guests: guestValues.adults + guestValues.children + guestValues.infants,
-    roomPrice: roomDetail?.room?.price || roomPrice,
+    roomPrice: hotelDetails?.min_room_price || roomPrice,
     totalPrice:
       selectedDates.checkin_date &&
       selectedDates.checkout_date &&
@@ -213,7 +213,7 @@ function BookingSection({
               <span className="text-gray-dark">from</span>
 
               <span className="actual-price text-primary-dark font-semibold text-xl">
-                Rs {roomPrice}
+                Rs {roomPrice && roomPrice}
               </span>
               <span className="previous-price text-gray line-through text-sm font-medium">
                 Rs. {discountPrice}

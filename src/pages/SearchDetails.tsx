@@ -41,7 +41,7 @@ function SearchDetails() {
           <MobileSearch />
         </div>
         <div
-          className={`sm:hidden my-3 justify-between items-center mx-4 px-2 rounded-sm py-1 h-full flex border ${
+          className={`hidden my-3 justify-between items-center mx-4 px-2 rounded-sm py-1 h-full flex border ${
             isDetail && "hidden"
           }`}
         >

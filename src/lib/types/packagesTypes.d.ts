@@ -131,6 +131,7 @@ export interface PackageDetailsProps {
     location?: string;
     ratings?: number;
     reviews?: number;
+    subImages?: any;
   };
   description: {
     description?: string;
@@ -193,7 +194,7 @@ export interface PackageDetailResponse {
   package_policy: string; // HTML string
   package_images: Array<{
     id: number;
-    url: string;
+    photo_url: string;
   }>;
   user_reviews: Array<{
     id: 1;

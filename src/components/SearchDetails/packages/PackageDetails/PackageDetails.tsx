@@ -1,9 +1,9 @@
-import { imageList } from "@/lib/constants/hoteDetails";
+// import { imageList } from "@/lib/constants/hoteDetails";
 import ImageSection from "../../ui/DetailSection/ImageSection";
 import { useState } from "react";
 import DetailHeader from "../../ui/DetailSection/DetaiHeader";
-import DetailTab from "../../ui/DetailSection/DetailTab";
-import { packageDetailTabList } from "@/lib/constants/packageLists";
+// import DetailTab from "../../ui/DetailSection/DetailTab";
+// import { packageDetailTabList } from "@/lib/constants/packageLists";
 import PackageDescription from "./PackageDescription";
 import PackageReview from "./PackageReview";
 import PackageLocation from "./PackageLocation";
@@ -20,7 +20,8 @@ function PackageDetails({
   description,
   policy,
   reviews,
-}: PackageDetailsProps) {
+}: // imageList
+PackageDetailsProps) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const handleImageOpen = () => {
@@ -42,16 +43,14 @@ function PackageDetails({
         <div className="sm:mt-0 mt-8" onClick={handleImageOpen}>
           <ImageSection
             mainImageSrc={detailHeader.image}
-            subImages={imageList[0].hotelSubImage.map((subImage) => ({
-              src: subImage.hotelSubimage,
-            }))}
+            subImages={detailHeader.subImages}
           />
         </div>
         <div className="py-2">
-          <DetailTab
+          {/* <DetailTab
             tabList={packageDetailTabList}
             defaultSelectedTab="Description"
-          />
+          /> */}
         </div>
         <div>
           <PackageDescription

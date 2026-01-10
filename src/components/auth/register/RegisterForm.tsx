@@ -38,7 +38,6 @@ function RegisterForm({ isLogo = true }: RegisterFormProps) {
   const [googleAuth] = useGoogleAuthMutation();
   const [refreshAuth] = useRefreshAuthMutation();
   const [authUserProfile] = useLazyAuthUserProfileQuery();
-  console.log();
 
   const signInWithGoogle = useGoogleLogin({
     onSuccess: async (tokenResponse) => {

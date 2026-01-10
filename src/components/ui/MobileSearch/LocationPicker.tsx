@@ -12,63 +12,73 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
+import { useNameSuggestionsQuery } from "@/redux/services/homeApi";
 import { Check } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MdLocationOn } from "react-icons/md";
 
-const frameworks = [
-  {
-    value: "next.js",
-    label: "Next.js",
-  },
-  {
-    value: "sveltekit",
-    label: "SvelteKit",
-  },
-  {
-    value: "nuxt.js",
-    label: "Nuxt.js",
-  },
-  {
-    value: "remix",
-    label: "Remix",
-  },
-  {
-    value: "astro",
-    label: "Astro",
-  },
-];
+interface LocationPickerProps {
+  selectedValue: string;
+  setSelectedValue: (value: string) => void;
+}
 
-function LocationPicker() {
+function LocationPicker({
+  selectedValue,
+  setSelectedValue,
+}: LocationPickerProps) {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
-  const handleChange = () => {};
+  const [debouncedInput, setDebouncedInput] = useState("");
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedInput(value);
+    }, 300);
+    return () => clearTimeout(handler);
+  }, [value]);
+
+  const { data, isLoading } = useNameSuggestionsQuery(debouncedInput, {
+    skip: debouncedInput.length < 2,
+  });
+
+  const hotelData = data?.hotelData || [];
+  const locationData = data?.locationData || [];
+
+  const suggestions = [
+    ...hotelData.map((hotel) => ({
+      label: `${hotel.name}, ${hotel.location.city}`,
+      value: `${hotel.name}, ${hotel.location.city}`,
+    })),
+    ...locationData.map((loc) => ({
+      label: `${loc.name}, ${loc.location.city}`,
+      value: `${loc.name}, ${loc.location.city}`,
+    })),
+  ];
+
+  useEffect(() => {
+    if (selectedValue) {
+      setValue(selectedValue);
+    }
+  }, [selectedValue]);
+
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <button
           role="combobox"
           aria-expanded={open}
-          className={cn(" w-full h-[4rem] px-1 py-0.5")}
+          className={cn(" !w-full h-[4rem] rounded-md   py-0.5")}
         >
-          <div className="bg-white rounded-sm px-2 flex items-center justify-start gap-2">
+          <div className="bg-white rounded-md  px-2 flex items-center justify-start gap-2 w-full">
             <MdLocationOn className="size-5 text-gray mt-[2px]" />
-            <div className="text-start">
-              {value ? (
-                <p className="text-sm">
-                  {
-                    frameworks.find((framework) => framework.value === value)
-                      ?.label
-                  }
-                </p>
-              ) : (
-                <input
-                  type="text"
-                  placeholder="Where are you going?"
-                  className="text-sm text-gray-500 h-10 placeholder:text-gray-400 bg-transparent border-none focus:outline-none"
-                  onChange={handleChange}
-                />
-              )}
+            <div className="text-start h-11 rounded-sm w-full items-center flex">
+              <p
+                className={`text-sm ${
+                  selectedValue ? "text-gray-900" : "text-gray-light"
+                }`}
+              >
+                {selectedValue || "Select Location"}
+              </p>
             </div>
           </div>
         </button>
@@ -76,26 +86,32 @@ function LocationPicker() {
 
       <PopoverContent className="w-[200px] p-0">
         <Command>
-          <CommandInput placeholder="Search location..." />
+          <CommandInput
+            placeholder="Search location..."
+            value={value}
+            onValueChange={(val) => setValue(val)}
+          />
           <CommandList>
-            <CommandEmpty>No framework found.</CommandEmpty>
+            {isLoading && <p className="px-3 py-2 text-sm">Loading...</p>}
+            <CommandEmpty>No suggestions Found.</CommandEmpty>
             <CommandGroup>
-              {frameworks.map((framework) => (
+              {suggestions.map((item) => (
                 <CommandItem
-                  key={framework.value}
-                  value={framework.value}
+                  key={item.value}
+                  value={item.value}
                   onSelect={(currentValue) => {
-                    setValue(currentValue === value ? "" : currentValue);
+                    setSelectedValue(currentValue);
+                    setValue(""); // reset input (important UX)
                     setOpen(false);
                   }}
                 >
                   <Check
                     className={cn(
                       "mr-2 h-4 w-4",
-                      value === framework.value ? "opacity-100" : "opacity-0"
+                      selectedValue === item.value ? "opacity-100" : "opacity-0"
                     )}
                   />
-                  {framework.label}
+                  {item.label}
                 </CommandItem>
               ))}
             </CommandGroup>

@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import * as React from "react";
-import { format } from "date-fns";
+import { eachDayOfInterval, format, isSameDay } from "date-fns";
 import { DateRange } from "react-day-picker";
 import { MdDateRange } from "react-icons/md";
 
@@ -14,19 +15,34 @@ import {
 } from "@/components/ui/popover";
 
 interface CheckInOutPropsTypes {
+  date: DateRange | undefined;
+  setDate: React.Dispatch<React.SetStateAction<DateRange | undefined>>;
   className?: string;
   showLabel?: boolean;
+  onChange?: (dateRange: DateRange) => void;
 }
 
 export default function CheckInOut({
+  date,
+  setDate,
   className,
   showLabel = true,
+  onChange,
 }: CheckInOutPropsTypes) {
-  const [date, setDate] = React.useState<DateRange | undefined>({
-    from: undefined,
-    to: undefined,
-  });
+  const handleDateChange = (selectedDate: DateRange | undefined) => {
+    setDate(selectedDate);
+    if (selectedDate && onChange) {
+      onChange(selectedDate);
+    }
+  };
 
+  // Get the in-between dates (excluding start and end)
+  const inRange =
+    date?.from && date.to
+      ? eachDayOfInterval({ start: date.from, end: date.to }).filter(
+          (d) => !isSameDay(d, date.from!) && !isSameDay(d, date.to!)
+        )
+      : [];
   return (
     <div className={cn("w-full  rounded-lg", className)}>
       <Popover>
@@ -71,8 +87,15 @@ export default function CheckInOut({
             mode="range"
             defaultMonth={date?.from}
             selected={date}
-            onSelect={setDate}
             numberOfMonths={2}
+            onSelect={handleDateChange}
+            modifiers={{
+              inRange,
+            }}
+            modifiersClassNames={{
+              inRange: "!bg-blue-300 ", // light blue highlight
+              selected: "hover:bg-blue-400 bg-blue-400", // start and end
+            }}
           />
         </PopoverContent>
       </Popover>

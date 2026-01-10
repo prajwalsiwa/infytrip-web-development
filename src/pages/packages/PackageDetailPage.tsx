@@ -51,6 +51,9 @@ function PackageDetailPage() {
   const packageDetail = usePackageDetailQuery(Number(id));
 
   const detailHeader = {
+    subImages: packageDetail?.data?.package_images?.map((img) => {
+      return { src: img?.photo_url };
+    }),
     image: packageDetail?.data?.featured_image_url,
     title: packageDetail?.data?.title,
     location: `${packageDetail?.data?.user_property?.location?.city}, ${packageDetail?.data?.user_property?.location?.country}`,

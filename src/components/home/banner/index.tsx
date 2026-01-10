@@ -10,21 +10,30 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 const Banner = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [selectedValue, setSelectedValue] = useState("");
-  const defaultDateRange = useMemo(() => ({
-    from: addDays(new Date(), 1),
-    to: addDays(new Date(), 2),
-  }), []);
+  const defaultDateRange = useMemo(
+    () => ({
+      from: addDays(new Date(), 1),
+      to: addDays(new Date(), 2),
+    }),
+    []
+  );
 
   const [date, setDate] = useState(defaultDateRange);
 
   const activeTab = searchParams.get("tab") || "stays";
 
   const navigate = useNavigate();
-  const handleValueChange = useCallback((val: string) => {
-    setSearchParams({ tab: val });
-  }, [setSearchParams]);
+  const handleValueChange = useCallback(
+    (val: string) => {
+      setSearchParams({ tab: val });
+    },
+    [setSearchParams]
+  );
 
-  const formatDate = useCallback((date: Date) => date.toISOString().split("T")[0], []);
+  const formatDate = useCallback(
+    (date: Date) => date.toISOString().split("T")[0],
+    []
+  );
 
   const [guestValues, setGuestValues] = useState({
     adults: 0,
@@ -32,15 +41,24 @@ const Banner = () => {
     infants: 0,
   });
 
-  const handleGuestChange = useCallback((updatedValues: SetStateAction<{ adults: number; children: number; infants: number; }>) => {
-    setGuestValues(updatedValues);
-  }, []);
+  const handleGuestChange = useCallback(
+    (
+      updatedValues: SetStateAction<{
+        adults: number;
+        children: number;
+        infants: number;
+      }>
+    ) => {
+      setGuestValues(updatedValues);
+    },
+    []
+  );
 
   const handleSearch = useCallback(() => {
     const city = selectedValue?.split(", ").pop() || "";
     const checkin_date = formatDate(date.from);
     const checkout_date = formatDate(date.to);
-  
+
     const params = new URLSearchParams({
       tab: "stays",
       city,
@@ -50,10 +68,10 @@ const Banner = () => {
       children: guestValues.children.toString(),
       infants: guestValues.infants.toString(),
     });
-  
+
     navigate(`/search/hotel-list?${params.toString()}`);
   }, [selectedValue, date, guestValues, navigate, formatDate]);
-  
+
   return (
     <section className="banner md:px-24 sm:px-10 px-6 w-full bg-[url('/banner.jpg')] bg-no-repeat bg-center bg-cover">
       <div className="relative z-10">
@@ -98,7 +116,10 @@ const Banner = () => {
                     </div>
                     {/* Guest Input */}
                     <div className="h-full">
-                      <GuestPicker values={guestValues} onChange={handleGuestChange} />
+                      <GuestPicker
+                        values={guestValues}
+                        onChange={handleGuestChange}
+                      />
                     </div>
 
                     {/* Search Button */}
@@ -112,12 +133,12 @@ const Banner = () => {
                 </div>
               </div>
               <div className="lg:hidden block w-full">
-                <MobileSearch />
+                <MobileSearch activeTab={activeTab} />
               </div>
             </TabsContent>
             <TabsContent value="packages">
               {/* Search Container */}
-              <div className="mt-3 inline-flex p-4 rounded-lg bg-white/20 border">
+              <div className="mt-3  p-4 rounded-lg bg-white/20 border lg:flex hidden">
                 <div className="search-input-container flex border rounded-l-lg w-max">
                   {/* Location Search */}
                   <div>
@@ -142,6 +163,9 @@ const Banner = () => {
                 >
                   Search
                 </button>
+              </div>
+              <div className="lg:hidden block w-full">
+                <MobileSearch activeTab={activeTab} />
               </div>
             </TabsContent>
           </Tabs>

@@ -56,7 +56,7 @@ const HotelCard = ({
             }`}
           >
             <Link to={`/hotel/${data.id}`}>
-              <h1 className="text-base text-primary-dark">{data.name}</h1>
+              <h1 className="text-base text-primary-dark flex">{data.name}</h1>
               <p className="text-xs text-gray flex justify-start">
                 {data?.location?.city}, {data?.location?.country}
               </p>

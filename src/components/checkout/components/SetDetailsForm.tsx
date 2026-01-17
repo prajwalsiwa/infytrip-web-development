@@ -96,11 +96,11 @@ function SetDetailsForm() {
           </div>
         </div>
 
-        <div className="flex flex-col w-full mt-4 pr-3">
+        <div className="flex flex-col w-full mt-4 md:pr-3">
           <Label htmlFor="number">
             Mobile Number <span className="text-red-500">*</span>
           </Label>
-          <div className="gap-2 flex items-center ">
+          <div className="gap-2 flex items-center  ">
             <select
               {...register("country_code", {
                 required: "Country code is required",
@@ -118,7 +118,7 @@ function SetDetailsForm() {
               id="number"
               type="number"
               placeholder="XXXXXXXX"
-              className="border rounded !bg-white  hover:!border-primary w-1/2"
+              className="border rounded !bg-white  hover:!border-primary w-full md:w-1/2"
               {...register("mobile_number", {
                 required: "Mobile number is required",
                 pattern: {

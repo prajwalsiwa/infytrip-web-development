@@ -15,15 +15,15 @@ interface SingerModalProps {
 function ImageCarouselModal({ isOpen, onClose, imageSrc }: SingerModalProps) {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-[44rem] gap-6 ">
+      <DialogContent className="max-w-[44rem] md:max-w-[44rem] w-[95vw] sm:w-auto gap-3 sm:gap-6 p-3 sm:p-6 ">
         <DialogHeader>
-          <DialogTitle className="text-gray-dark">
+          <DialogTitle className="text-gray-dark text-lg sm:text-xl">
             The Chancery Pavillion Hotel
           </DialogTitle>
         </DialogHeader>
 
         {/* Singer Image Slider */}
-        <div className="py-4">
+        <div className="py-2 sm:py-4">
           <ImageCarousel imageSrc={imageSrc} />
         </div>
       </DialogContent>

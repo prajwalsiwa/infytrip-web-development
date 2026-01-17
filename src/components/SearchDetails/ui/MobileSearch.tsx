@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { useRef, useMemo } from "react";
 import { format } from "date-fns";
 import Icon from "@/components/ui/Icon";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 interface MobileSearchProps {
   className?: string;
@@ -41,13 +41,23 @@ function MobileSearch({ className }: MobileSearchProps) {
     const infants = Number(searchParams.get("infants") ?? 0);
 
     const total = adults + children + infants;
-    return `${total || 0} Guests`;
+    if (total === 0) return "Guests";
+
+    const parts = [];
+    if (adults > 0) parts.push(`${adults} adult${adults > 1 ? "s" : ""}`);
+    if (children > 0)
+      parts.push(`${children} child${children > 1 ? "ren" : ""}`);
+    if (infants > 0) parts.push(`${infants} infant${infants > 1 ? "s" : ""}`);
+
+    return parts.join(", ");
   }, [searchParams]);
+
+  const navigate = useNavigate();
 
   return (
     <div className={cn("w-full border rounded-sm py-1 px-1 mt-2", className)}>
       <div className="flex items-center gap-2">
-        <div>
+        <div onClick={() => navigate("/")}>
           <Icon name="arrow_back" className="text-gray-dark" />
         </div>
 
@@ -55,7 +65,7 @@ function MobileSearch({ className }: MobileSearchProps) {
           {/* Location */}
           <div className="w-full flex items-center px-2 rounded">
             <MdLocationOn className="text-gray mr-2" />
-            <span className="text-gray">{locationValue}</span>
+            <span className="text-gray">{locationValue || "-"}</span>
           </div>
 
           <div className="flex w-fit">

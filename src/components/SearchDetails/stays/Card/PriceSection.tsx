@@ -66,10 +66,12 @@ const PriceSection: React.FC<PriceSectionProps> = ({
           </div>
           <div className="w-full  ">
             <div className="flex items-center gap-1  justify-end">
-              <span className="text-grey-700 line-through text-md font-bold">
-                Rs. {originalPrice}
-              </span>
-              <span className="text-primary-dark w-full text-xl font-bold">
+              {originalPrice !== 0 && (
+                <span className="text-grey-700 line-through  w-[73px]  text-md font-bold">
+                  Rs. {originalPrice}
+                </span>
+              )}
+              <span className="text-primary-dark text-xl w-[6rem] font-bold">
                 Rs. {discountedPrice}
               </span>
             </div>

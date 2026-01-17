@@ -15,8 +15,8 @@ const ImageSection: React.FC<ImageSectionProps> = ({
   hotelSubImageList,
 }) => {
   return (
-    <div className="images flex justify-between h-full w-full">
-      <div className=" h-[13.58rem] w-72 border  flex-grow">
+    <div className="images flex justify-between h-full w-full ">
+      <div className=" h-[13.58rem] xl:w-72 md:w-52 w-48 border  flex-grow">
         <img src={hotelImage} alt="Hotel" className=" w-full h-full  " />
       </div>
       <div className="sub-images h-full md:block hidden ">

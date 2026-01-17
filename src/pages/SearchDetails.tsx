@@ -38,7 +38,7 @@ function SearchDetails() {
         <div className="top w-full hidden  search-section py-7 bg-sky-900 sm:flex justify-center items-center">
           <SearchBox tabList={searchboxTabList} />
         </div>
-        <div className={`pt-14 sm:hidden block px-4 ${isDetail && "hidden"}`}>
+        <div className={`pt-16 sm:hidden  block px-4 ${isDetail && "hidden"}`}>
           <MobileSearch />
         </div>
         <div

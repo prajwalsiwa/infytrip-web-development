@@ -47,7 +47,7 @@ function HotelCheckout() {
   const timerValue = useSelector((state: RootState) => state.timer.timer);
 
   return (
-    <div className="flex flex-col gap-6 px-4 py-6 mt-14 sm:mt-0 sm:px-6 lg:flex-row lg:justify-between lg:gap-8">
+    <div className="flex flex-col gap-6 sm:px-4 py-6 mt-14 sm:mt-0 lg:flex-row lg:justify-between lg:gap-8">
       {/* Left Section */}
       <div className="flex flex-col md:flex-row gap-6 w-full">
         <div className="flex flex-col gap-2 w-full">
@@ -58,7 +58,7 @@ function HotelCheckout() {
             <Icon name="arrow_back_ios" />
             <span className="text-gray-dark ml-2">Edit your booking</span>
           </div>
-          <div className="flex-grow  rounded-lg p-4">
+          <div className="flex-grow  rounded-lg py-4">
             <Outlet />
           </div>
         </div>

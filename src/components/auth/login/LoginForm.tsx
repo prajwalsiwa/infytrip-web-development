@@ -171,7 +171,7 @@ function LoginForm({ isLogo = true }: LoginFormProps) {
   });
 
   return (
-    <div className="px-20 flex items-center flex-col gap-7 w-full h-full justify-center">
+    <div className=" px-4 sm:px-20 flex items-center flex-col gap-7 w-full h-full justify-center">
       {isLogo && (
         <div className="gap-7 flex flex-col w-full">
           <div className="logo cursor-pointer" onClick={() => navigate("/")}>

@@ -1,7 +1,7 @@
 import React from "react";
 import Icon from "@/components/ui/Icon";
 import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 interface PriceSectionProps {
   id: number;
@@ -21,12 +21,14 @@ const PriceSection: React.FC<PriceSectionProps> = ({
   discountPercent,
 }) => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
   const handleClick = () => {
     // Navigate based on the availability check
     // COMMENTED OUT FOR PRE-LAUNCH (STAYS ONLY)
     // if (ifStays) {
-    navigate(`/search/hotel-view/${id}`);
+    const queryString = searchParams.toString();
+    navigate(`/search/hotel-view/${id}?${queryString}`);
     // } else {
     //   checkPackageAvailability({
     //     packageId: Number(id),

@@ -7,7 +7,12 @@ import {
   useContinueBookingMutation,
 } from "@/redux/services/staysApi";
 import { useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import {
+  useLocation,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 import { addDays, format } from "date-fns";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
@@ -39,7 +44,23 @@ function BookingSection({
   );
   // const { toast } = useToast();
 
+  const [searchParams] = useSearchParams();
+
   const noOfRooms = useSelector((state: RootState) => state.stays?.rooms);
+
+  // Parse dates from URL params or use defaults
+  const checkinFromParams = searchParams.get("checkin_date");
+  const checkoutFromParams = searchParams.get("checkout_date");
+  const adultsFromParams = searchParams.get("adults");
+  const childrenFromParams = searchParams.get("children");
+  const infantsFromParams = searchParams.get("infants");
+
+  const defaultCheckin = checkinFromParams
+    ? new Date(checkinFromParams)
+    : addDays(new Date(), 1);
+  const defaultCheckout = checkoutFromParams
+    ? new Date(checkoutFromParams)
+    : addDays(new Date(), 2);
 
   // console.log(noOfRooms);
 
@@ -48,8 +69,8 @@ function BookingSection({
   );
 
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
-    from: addDays(new Date(), 1),
-    to: addDays(new Date(), 2),
+    from: defaultCheckin,
+    to: defaultCheckout,
   });
 
   const hotelDetails = useSelector(
@@ -61,13 +82,13 @@ function BookingSection({
     checkin_date: string | null;
     checkout_date: string | null;
   }>({
-    checkin_date: format(addDays(new Date(), 1), "yyyy-MM-dd"),
-    checkout_date: format(addDays(new Date(), 2), "yyyy-MM-dd"),
+    checkin_date: format(defaultCheckin, "yyyy-MM-dd"),
+    checkout_date: format(defaultCheckout, "yyyy-MM-dd"),
   });
   const [guestValues, setGuestValues] = useState({
-    adults: 0,
-    children: 0,
-    infants: 0,
+    adults: adultsFromParams ? parseInt(adultsFromParams) : 0,
+    children: childrenFromParams ? parseInt(childrenFromParams) : 0,
+    infants: infantsFromParams ? parseInt(infantsFromParams) : 0,
   });
 
   const [checkRoomAvailability] = useCheckRoomAvailabilityMutation();

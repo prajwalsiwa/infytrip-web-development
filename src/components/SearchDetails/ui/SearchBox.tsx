@@ -42,11 +42,12 @@ function SearchBox({ tabList }: SearchBoxProps) {
         defaultValue={activeTab}
         className="w-full "
         onValueChange={(val) => {
-          if (val !== "stays") {
-            navigate(`/search/package-list?tab=${val}`);
-          } else {
-            navigate(`/search/hotel-list?tab=${val}`);
-          }
+          // COMMENTED OUT FOR PRE-LAUNCH (STAYS ONLY)
+          // if (val !== "stays") {
+          //   navigate(`/search/package-list?tab=${val}`);
+          // } else {
+          navigate(`/search/hotel-list?tab=${val}`);
+          // }
         }}
       >
         <TabsList>

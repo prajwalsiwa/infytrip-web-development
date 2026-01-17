@@ -73,8 +73,8 @@ const Banner = () => {
   }, [selectedValue, date, guestValues, navigate, formatDate]);
 
   return (
-    <section className="banner md:px-24 sm:px-10 px-6 w-full bg-[url('/banner.jpg')] bg-no-repeat bg-center bg-cover">
-      <div className="relative z-10">
+    <section className="banner md:px-24 sm:px-10 px-6 border w-full bg-[url('/banner.jpg')] bg-no-repeat bg-center bg-cover">
+      <div className="relative z-10 w-full ">
         <h1 className="text-gray-dark max-w-lg">
           Explore{" "}
           <span className="inline-block text-primary-dark underline underline-offset-8">
@@ -87,7 +87,7 @@ const Banner = () => {
           Find the best stay and your dream vacation.
         </h5>
 
-        <div className="mt-12 p-6 rounded-lg bg-white/20 w-fit border">
+        <div className="mt-12 p-6 rounded-lg bg-white/20 lg:w-fit w-full ">
           <Tabs
             defaultValue={activeTab}
             onValueChange={handleValueChange}
@@ -95,9 +95,10 @@ const Banner = () => {
           >
             <TabsList>
               <TabsTrigger value="stays">Stays</TabsTrigger>
-              <TabsTrigger value="packages">Packages</TabsTrigger>
+              {/* COMMENTED OUT FOR PRE-LAUNCH (STAYS ONLY) */}
+              {/* <TabsTrigger value="packages">Packages</TabsTrigger> */}
             </TabsList>
-            <TabsContent value="stays" className="!w-full flex">
+            <TabsContent value="stays" className="!w-full  flex">
               {/* Search Container */}
               <div className="w-full hidden lg:block">
                 <div className="mt-3 inline-flex p-4 rounded-lg bg-white/20 border">
@@ -132,42 +133,43 @@ const Banner = () => {
                   </div>
                 </div>
               </div>
-              <div className="lg:hidden block w-full">
-                <MobileSearch activeTab={activeTab} />
+              <div className="lg:hidden block w-full ">
+                <MobileSearch />
               </div>
             </TabsContent>
-            <TabsContent value="packages">
+            {/* COMMENTED OUT FOR PRE-LAUNCH (STAYS ONLY) */}
+            {/* <TabsContent value="packages">
               {/* Search Container */}
-              <div className="mt-3  p-4 rounded-lg bg-white/20 border lg:flex hidden">
-                <div className="search-input-container flex border rounded-l-lg w-max">
-                  {/* Location Search */}
-                  <div>
-                    <LocationPicker
-                      selectedValue={selectedValue}
-                      setSelectedValue={setSelectedValue}
-                    />
-                  </div>
-
-                  {/* Date Range */}
-                  <div>
-                    <CheckInOutPicker date={undefined} setDate={undefined} />
-                  </div>
-
-                  {/* Guest Input */}
-
-                  {/* Search Button */}
+            <div className="mt-3  p-4 rounded-lg bg-white/20 border  hidden">
+              <div className="search-input-container flex border rounded-l-lg w-max">
+                {/* Location Search */}
+                <div>
+                  <LocationPicker
+                    selectedValue={selectedValue}
+                    setSelectedValue={setSelectedValue}
+                  />
                 </div>
-                <button
-                  className="bg-primary text-white px-6 rounded-r-md"
-                  onClick={handleSearch}
-                >
-                  Search
-                </button>
+
+                {/* Date Range */}
+                <div>
+                  <CheckInOutPicker date={undefined} setDate={undefined} />
+                </div>
+
+                {/* Guest Input */}
+
+                {/* Search Button */}
               </div>
-              <div className="lg:hidden block w-full">
-                <MobileSearch activeTab={activeTab} />
-              </div>
-            </TabsContent>
+              <button
+                className="bg-primary text-white px-6 rounded-r-md"
+                onClick={handleSearch}
+              >
+                Search
+              </button>
+            </div>
+            <div className="lg:hidden block w-full">
+              {/* <MobileSearch activeTab={activeTab} /> */}
+            </div>
+            {/* </TabsContent> */}
           </Tabs>
         </div>
       </div>

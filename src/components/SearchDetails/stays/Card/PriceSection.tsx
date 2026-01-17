@@ -1,9 +1,7 @@
 import React from "react";
 import Icon from "@/components/ui/Icon";
 import { Button } from "@/components/ui/button";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useCheckPackageAvailabilityMutation } from "@/redux/services/packagesApi";
-import { format } from "date-fns";
+import { useNavigate } from "react-router-dom";
 
 interface PriceSectionProps {
   id: number;
@@ -23,32 +21,31 @@ const PriceSection: React.FC<PriceSectionProps> = ({
   discountPercent,
 }) => {
   const navigate = useNavigate();
-  const { pathname } = useLocation();
-  const ifStays = pathname === "/search/hotel-list";
-
-  const [checkPackageAvailability] = useCheckPackageAvailabilityMutation();
-
-  const checkDate = format(new Date(), "yyyy-MM-dd");
 
   const handleClick = () => {
     // Navigate based on the availability check
-    if (ifStays) {
-      navigate(`/search/hotel-view/${id}`);
-    } else {
-      checkPackageAvailability({
-        packageId: Number(id),
-        number_of_guests: 0,
-        date: checkDate,
-      }).unwrap();
-      navigate(`/search/package-view/${id}`);
-    }
+    // COMMENTED OUT FOR PRE-LAUNCH (STAYS ONLY)
+    // if (ifStays) {
+    navigate(`/search/hotel-view/${id}`);
+    // } else {
+    //   checkPackageAvailability({
+    //     packageId: Number(id),
+    //     number_of_guests: 0,
+    //     date: checkDate,
+    //   }).unwrap();
+    //   navigate(`/search/package-view/${id}`);
+    // }
   };
 
   return (
     <div className="right p-2   sm:px-4 sm:justify-between sm:flex-col items-start justify-start w-full h-full sm:items-center flex">
       <div className="flex w-full h-fit items-center justify-start">
         <div className="rating h-fit w-fit text-sm flex gap-1 px-2 sm:text-lg items-center justify-center rounded-md bg-yellow-600 text-white">
-          <Icon name="star" iconSymbolType="material-icons" className="text-sm sm:text-base" />
+          <Icon
+            name="star"
+            iconSymbolType="material-icons"
+            className="text-sm sm:text-base"
+          />
           {rating}
         </div>
         <div className="reviews flex  items-center text-sm  w-fit">

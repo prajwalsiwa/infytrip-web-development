@@ -15,9 +15,7 @@ export interface GuestPickerProps {
 const GuestPicker = ({ value, onChange }: GuestPickerProps) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
-  
   const buttonRef = useRef<HTMLDivElement | null>(null);
-
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -41,7 +39,17 @@ const GuestPicker = ({ value, onChange }: GuestPickerProps) => {
 
   const totalGuests = useMemo(() => {
     const total = value.adults + value.children + value.infants;
-    return total || "Guests";
+    if (total === 0) return "Guests";
+
+    const parts = [];
+    if (value.adults > 0)
+      parts.push(`${value.adults} adult${value.adults > 1 ? "s" : ""}`);
+    if (value.children > 0)
+      parts.push(`${value.children} child${value.children > 1 ? "ren" : ""}`);
+    if (value.infants > 0)
+      parts.push(`${value.infants} infant${value.infants > 1 ? "s" : ""}`);
+
+    return parts.join(", ");
   }, [value]);
 
   const handleValueUpdate = (
@@ -57,7 +65,7 @@ const GuestPicker = ({ value, onChange }: GuestPickerProps) => {
 
   return (
     <div className="bg-gray-50 flex items-center justify-center">
-      <div className="w-full max-w-md">
+      <div className="w-full">
         <div className="flex flex-col w-full h-[42px]">
           <div ref={buttonRef} className="relative h-full">
             <button
@@ -70,14 +78,14 @@ const GuestPicker = ({ value, onChange }: GuestPickerProps) => {
               </i>
               <div className="flex flex-col justify-start items-start gap-1">
                 <span className="text-sm flex text-gray-500">
-                  {totalGuests} {typeof totalGuests === "number" && "Guests"}
+                  {totalGuests}
                 </span>
               </div>
             </button>
 
             {dropdownOpen && (
               <div
-                className="absolute top-[100%] sm:left-0 right-0 p-6 z-50 border bg-white rounded-md shadow-md translate-y-1 cursor-default"
+                className="absolute top-[100%] sm:left-0 right-0 p-6 z-50 border bg-white rounded-md w-fit shadow-md translate-y-1 cursor-default"
                 style={{
                   animation: "fadeIn 0.3s ease-in-out",
                 }}

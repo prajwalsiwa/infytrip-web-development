@@ -17,8 +17,8 @@ import Icon from "@/components/ui/Icon";
 import { ChangeEvent, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import { useLocation } from "react-router-dom";
-import PackageHotelPay from "../PackageCheckout/PackageHotelPay";
+// COMMENTED OUT FOR PRE-LAUNCH (STAYS ONLY)
+// import PackageHotelPay from "../PackageCheckout/PackageHotelPay";
 
 const Payments: React.FC = () => {
   const bookingDetails = useSelector(
@@ -28,18 +28,19 @@ const Payments: React.FC = () => {
   const [amount, setAmount] = useState<number>(0);
   const userInfo = useSelector((state: RootState) => state.stays?.userInfo);
 
-  const { pathname } = useLocation();
-  const isPackage = pathname.includes("package");
+  // COMMENTED OUT FOR PRE-LAUNCH (STAYS ONLY)
+  // const isPackage = pathname.includes("package");
   const tabData = [
     {
       value: "pay-at-hotel",
       label: "Pay at Hotel",
       imgSrc: hoteLogo,
-      content: isPackage ? (
-        <PackageHotelPay prePayAmount={amount} />
-      ) : (
-        <HotelPay prePayAmount={amount} />
-      ),
+      // COMMENTED OUT FOR PRE-LAUNCH (STAYS ONLY)
+      // content: isPackage ? (
+      //   <PackageHotelPay prePayAmount={amount} />
+      // ) : (
+      content: <HotelPay prePayAmount={amount} />,
+      // ),
     },
     {
       value: "credit-debit-card",

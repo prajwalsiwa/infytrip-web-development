@@ -16,11 +16,12 @@ const HotelCard = ({
   const [searchParams] = useSearchParams();
   const activeTab = searchParams.get("tab") || "stays";
   const handleCardClick = () => {
-    if (isPackage) {
-      navigate(`/search/package-view/${data.id}?tab=${activeTab}`);
-    } else {
-      navigate(`/search/hotel-view/${data.id}?tab=${activeTab}`);
-    }
+    // COMMENTED OUT FOR PRE-LAUNCH (STAYS ONLY)
+    // if (isPackage) {
+    //   navigate(`/search/package-view/${data.id}?tab=${activeTab}`);
+    // } else {
+    navigate(`/search/hotel-view/${data.id}?tab=${activeTab}`);
+    // }
   };
 
   return (

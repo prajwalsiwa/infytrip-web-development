@@ -15,11 +15,12 @@ const searchboxTabList = [
     label: "Stays",
     value: "stays",
   },
-  {
-    id: 2,
-    label: "Packages",
-    value: "packages",
-  },
+  // COMMENTED OUT FOR PRE-LAUNCH (STAYS ONLY)
+  // {
+  //   id: 2,
+  //   label: "Packages",
+  //   value: "packages",
+  // },
 ];
 
 function SearchDetails() {

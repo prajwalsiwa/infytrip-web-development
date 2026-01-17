@@ -6,8 +6,9 @@ import Register from "@/pages/auth/Register";
 import SearchDetails from "@/pages/SearchDetails";
 import Stays from "@/pages/stays/HotelList";
 import HotelDetails from "@/pages/stays/HotelDetails";
-import Packages from "@/pages/packages/Packages";
-import PackageDetailPage from "@/pages/packages/PackageDetailPage";
+// COMMENTED OUT FOR PRE-LAUNCH (STAYS ONLY)
+// import Packages from "@/pages/packages/Packages";
+// import PackageDetailPage from "@/pages/packages/PackageDetailPage";
 import { RouteObject } from "react-router-dom";
 import CheckoutWrapper from "@/components/layout/CheckoutWrapper/CheckoutWrapper";
 import HotelCheckout from "@/components/checkout/HoteCheckout/HotelCheckout";
@@ -20,9 +21,10 @@ import SetDetailsForm from "@/components/checkout/components/SetDetailsForm";
 import Payments from "@/components/checkout/components/Payments";
 import BookingConfirmed from "@/pages/BookingConfimed";
 import ProtectedRoute from "@/components/layout/ProtectedRoute";
-import PackageCheckout from "@/components/checkout/PackageCheckout/PackageCheckout";
+// COMMENTED OUT FOR PRE-LAUNCH (STAYS ONLY)
+// import PackageCheckout from "@/components/checkout/PackageCheckout/PackageCheckout";
 import RegisterProperty from "@/pages/RegisterProperty";
-import CompletePackageBooking from "@/components/SearchDetails/packages/ui/CompletePackageBooking";
+// import CompletePackageBooking from "@/components/SearchDetails/packages/ui/CompletePackageBooking";
 import PropertyList from "@/pages/ListYourProperty/PropertyList";
 import CompleteListing from "@/pages/ListYourProperty/CompleteListing";
 import Header from "@/components/layout/header";
@@ -95,14 +97,15 @@ export const routes: RouteObject[] = [
         path: `hotel-view/:id`,
         element: <HotelDetails />,
       },
-      {
-        path: "package-list",
-        element: <Packages />,
-      },
-      {
-        path: "package-view/:id",
-        element: <PackageDetailPage />,
-      },
+      // COMMENTED OUT FOR PRE-LAUNCH (STAYS ONLY)
+      // {
+      //   path: "package-list",
+      //   element: <Packages />,
+      // },
+      // {
+      //   path: "package-view/:id",
+      //   element: <PackageDetailPage />,
+      // },
     ],
   },
 
@@ -166,65 +169,66 @@ export const routes: RouteObject[] = [
     ],
   },
 
+  // COMMENTED OUT FOR PRE-LAUNCH (STAYS ONLY)
   // New package-view/checkout route
-  {
-    path: "package-view/checkout",
-    element: <CheckoutWrapper />,
-    children: [
-      {
-        path: ":id/package-booking-confirmed",
-        element: (
-          <ProtectedRoute>
-            <CompletePackageBooking />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: "",
-        element: <PackageCheckout />,
-        children: [
-          { path: ":id/login/", element: <LoginForm isLogo={false} /> },
-          {
-            path: ":id/verify",
-            element: (
-              <ProtectedRoute>
-                <VerifyNumber />
-              </ProtectedRoute>
-            ),
-          },
-          {
-            path: ":id/set-details",
-            element: (
-              <ProtectedRoute>
-                <SetDetailsForm />
-              </ProtectedRoute>
-            ),
-          },
-          {
-            path: ":id/pay-with",
-            element: (
-              <ProtectedRoute>
-                <Payments />
-              </ProtectedRoute>
-            ),
-          },
-          {
-            path: ":id/set-password",
-            element: (
-              <ProtectedRoute>
-                <SetPassword />
-              </ProtectedRoute>
-            ),
-          },
-          {
-            path: "forgot-password",
-            element: <ForgetPasswordForm isLogo={false} />,
-          },
-          { path: "sign-up", element: <RegisterForm isLogo={false} /> },
-        ],
-      },
-    ],
-  },
+  // {
+  //   path: "package-view/checkout",
+  //   element: <CheckoutWrapper />,
+  //   children: [
+  //     {
+  //       path: ":id/package-booking-confirmed",
+  //       element: (
+  //         <ProtectedRoute>
+  //           <CompletePackageBooking />
+  //         </ProtectedRoute>
+  //       ),
+  //     },
+  //     {
+  //       path: "",
+  //       element: <PackageCheckout />,
+  //       children: [
+  //         { path: ":id/login/", element: <LoginForm isLogo={false} /> },
+  //         {
+  //           path: ":id/verify",
+  //           element: (
+  //             <ProtectedRoute>
+  //               <VerifyNumber />
+  //             </ProtectedRoute>
+  //           ),
+  //         },
+  //         {
+  //           path: ":id/set-details",
+  //           element: (
+  //             <ProtectedRoute>
+  //               <SetDetailsForm />
+  //             </ProtectedRoute>
+  //           ),
+  //         },
+  //         {
+  //           path: ":id/pay-with",
+  //           element: (
+  //             <ProtectedRoute>
+  //               <Payments />
+  //             </ProtectedRoute>
+  //           ),
+  //         },
+  //         {
+  //           path: ":id/set-password",
+  //           element: (
+  //             <ProtectedRoute>
+  //               <SetPassword />
+  //             </ProtectedRoute>
+  //           ),
+  //         },
+  //         {
+  //           path: "forgot-password",
+  //           element: <ForgetPasswordForm isLogo={false} />,
+  //         },
+  //         { path: "sign-up", element: <RegisterForm isLogo={false} /> },
+  //       ],
+  //     },
+  //   ],
+  // },
 
   {
     path: "/list-your-property/property-list",

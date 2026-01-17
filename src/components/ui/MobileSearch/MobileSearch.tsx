@@ -6,7 +6,7 @@ import { useCallback, useMemo, useState } from "react";
 import { addDays, format } from "date-fns";
 import { DateRange } from "react-day-picker";
 
-function MobileSearch({ activeTab }: { activeTab: string }) {
+function MobileSearch() {
   const [selectedValue, setSelectedValue] = useState("");
   const [guestValues, setGuestValues] = useState({
     adults: 2,
@@ -61,19 +61,16 @@ function MobileSearch({ activeTab }: { activeTab: string }) {
   }, [selectedValue, date, guestValues, navigate]);
 
   return (
-    <div className="!w-full">
-      <div className="!w-full">
-        <LocationPicker
-          selectedValue={selectedValue}
-          setSelectedValue={setSelectedValue}
-        />
-      </div>
-      <div className="flex gap-2 !w-full">
-        <CheckInOut date={date} setDate={setDate} />
-        {activeTab !== "packages" && (
-          <GuestPicker value={guestValues} onChange={handleGuestChange} />
-        )}
-      </div>
+    <div className="!w-full flex flex-col gap-4 ">
+      <LocationPicker
+        selectedValue={selectedValue}
+        setSelectedValue={setSelectedValue}
+      />
+      <CheckInOut date={date} setDate={setDate} />
+      {/* COMMENTED OUT FOR PRE-LAUNCH (STAYS ONLY) */}
+      {/* {activeTab !== "packages" && ( */}
+      <GuestPicker value={guestValues} onChange={handleGuestChange} />
+      {/* )} */}
       <div>
         <button
           className="bg-primary text-white px-6 rounded-r-md !w-full py-3 rounded-sm mt-3"

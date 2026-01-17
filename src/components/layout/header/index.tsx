@@ -126,12 +126,13 @@ const Header = () => {
               >
                 Hotels
               </Link>
-              <Link
+              {/* COMMENTED OUT FOR PRE-LAUNCH (STAYS ONLY) */}
+              {/* <Link
                 to={`/search/package-list?tab=${activeTab}`}
                 className="hover:text-gray transition-all"
               >
                 Packages
-              </Link>
+              </Link> */}
             </div>
           </div>
 

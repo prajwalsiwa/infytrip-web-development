@@ -67,7 +67,7 @@ function LocationPicker({
         <button
           role="combobox"
           aria-expanded={open}
-          className={cn(" !w-full h-[4rem] rounded-md   py-0.5")}
+          className={cn(" !w-full h-fit rounded-md")}
         >
           <div className="bg-white rounded-md  px-2 flex items-center justify-start gap-2 w-full">
             <MdLocationOn className="size-5 text-gray mt-[2px]" />
@@ -84,7 +84,7 @@ function LocationPicker({
         </button>
       </PopoverTrigger>
 
-      <PopoverContent className="w-[200px] p-0">
+      <PopoverContent className="w-full sm:w-96 md:w-[28rem] p-0">
         <Command>
           <CommandInput
             placeholder="Search location..."

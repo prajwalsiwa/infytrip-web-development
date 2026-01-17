@@ -3,11 +3,14 @@ import { Link, useSearchParams } from "react-router-dom";
 const TrendingCard = ({ title, listingNumber, imgSrc }: TrendingCardProps) => {
   const [searchParams] = useSearchParams();
   const activeTab = searchParams.get("tab") || "stays";
-  const packageRoute = `/search/package-list?tab=${activeTab}&city=${title}`;
+  // COMMENTED OUT FOR PRE-LAUNCH (STAYS ONLY)
+  // const packageRoute = `/search/package-list?tab=${activeTab}&city=${title}`;
   const staysRoute = `/search/hotel-list?tab=${activeTab}&city=${title}`;
   return (
     <Link
-      to={activeTab === "stays" ? staysRoute : packageRoute}
+      to={staysRoute}
+      // COMMENTED OUT FOR PRE-LAUNCH (STAYS ONLY)
+      // to={activeTab === "stays" ? staysRoute : packageRoute}
       className="trending-card"
     >
       <img

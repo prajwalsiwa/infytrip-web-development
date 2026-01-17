@@ -52,7 +52,7 @@ function SetDetailsForm() {
       </div>
 
       <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
-        <div className="flex gap-4 w-full">
+        <div className="flex gap-4 sm:flex-row flex-col w-full">
           <div className="w-full flex flex-col gap-1">
             <Label htmlFor="name">
               Full Name <span className="text-red-500">*</span>

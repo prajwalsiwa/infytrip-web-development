@@ -1,8 +1,11 @@
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
 import { useCompleteBookingMutation } from "@/redux/services/staysApi";
 import { RootState } from "@/redux/store";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import Icon from "@/components/ui/Icon";
 
 interface HotelPayProps {
   prePayAmount?: number;
@@ -11,11 +14,15 @@ interface HotelPayProps {
 function HotelPay({ prePayAmount }: HotelPayProps) {
   const bookId = localStorage.getItem("bookId");
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
   const [completeBooking] = useCompleteBookingMutation();
   const userInfo = useSelector((state: RootState) => state.stays.userInfo);
 
+  const { toast } = useToast();
+
   const handlePay = async () => {
     try {
+      setIsLoading(true);
       await completeBooking({
         bookingId: bookId,
         payment_method: "pay-at-hotel",
@@ -25,8 +32,15 @@ function HotelPay({ prePayAmount }: HotelPayProps) {
         referral_earn_point: null,
         user_info: userInfo,
       }).unwrap();
+      toast({
+        title: "Booking Confirmed",
+        description: "Your booking has been successfully confirmed.",
+        variant: "success",
+      });
+      setIsLoading(false);
       navigate(`../${bookId}/booking-confirmed`);
     } catch (error) {
+      setIsLoading(false);
       console.error("Error", error);
     }
   };
@@ -40,11 +54,18 @@ function HotelPay({ prePayAmount }: HotelPayProps) {
         </span>
       </div>
       <Button
-        className="text-gray-dark bg-white border-gray border w-[13.25rem] !py-5"
+        className="text-gray-dark bg-white border-gray border w-[13.25rem] !py-5 disabled:opacity-70"
         onClick={handlePay}
+        disabled={isLoading}
       >
-        {" "}
-        Pay directly at hotel
+        {isLoading ? (
+          <div className="flex items-center gap-2">
+            <Icon name="hourglass_top" className="animate-spin text-sm" />
+            <span>Processing...</span>
+          </div>
+        ) : (
+          "Pay directly at hotel"
+        )}
       </Button>
     </div>
   );

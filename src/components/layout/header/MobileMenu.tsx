@@ -7,7 +7,6 @@ function MobileMenu() {
     <div className="">
       <div className="flex flex-col gap-6">
         <span>Hotel</span>
-        <span>Package</span>
       </div>
       <Separator orientation="horizontal" className="my-4" />
       <Button

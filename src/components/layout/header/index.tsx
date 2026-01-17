@@ -87,7 +87,7 @@ const Header = () => {
   return (
     <header
       className={cn(
-        "header sm:relative absolute sm:border sm:border-b   xl:px-12 px-6  w-full z-10 !bg-transparent shadow-md sm:shadow-none sm:!bg-transparent sm:bg-white",
+        "header sm:relative absolute sm:border sm:border-b   xl:px-12 px-6  w-full z-10 !bg-grey-200 shadow-md sm:shadow-none sm:!bg-transparent sm:bg-white",
         {
           "header-sticky": isScrolled,
         }

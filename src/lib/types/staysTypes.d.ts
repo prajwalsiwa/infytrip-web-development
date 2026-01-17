@@ -132,7 +132,7 @@ export interface HotelDetails {
   user_review_count: number;
   rooms: Room[];
   discount_code_prefix: string;
-  nearby_attractions: string | null;
+  nearby_attractions: { name: string; distance: string }[];
   amenities: {
     category: string;
     amenities: Amenity[];

@@ -87,21 +87,21 @@ const Header = () => {
   return (
     <header
       className={cn(
-        "header sm:relative absolute sm:border sm:border-b   xl:px-12 px-6  w-full z-10 !bg-grey-100 shadow-md sm:shadow-none sm:!bg-transparent sm:bg-white",
+        "header sm:relative absolute sm:border sm:border-b xl:px-12 px-3 sm:px-6 w-full z-10 !bg-grey-100 shadow-md sm:shadow-none sm:!bg-transparent sm:bg-white",
         {
           "header-sticky": isScrolled,
         }
       )}
     >
-      <nav className="w-full ">
-        <div className="py-3 flex items-center justify-between">
+      <nav className="w-full">
+        <div className="py-3 sm:py-3 flex items-center justify-between gap-2 sm:gap-4">
           {/* Logo and Navigation Links */}
-          <div className="flex items-center sm:gap-6 gap-20 ">
+          <div className="flex items-center sm:gap-6 gap-6 flex-shrink-0">
             {/* Mobile Menu Icon */}
             <Dialog>
               <DialogTrigger>
                 <div className="block sm:hidden">
-                  <Icon name="menu" />
+                  <Icon name="menu" className="text-lg" />
                 </div>
               </DialogTrigger>
               <DialogContent className="w-screen h-screen">
@@ -115,14 +115,14 @@ const Header = () => {
                 alt="Infytrip Logo"
                 width={120}
                 height={40}
-                className="w-[120px] h-auto"
+                className="w-20 sm:w-[120px] h-auto"
               />
             </Link>
             {/* Links for larger screens */}
             <div className="hidden sm:flex gap-6">
               <Link
                 to={`/search/hotel-list?tab=${activeTab}`}
-                className="hover:text-gray transition-all"
+                className="hover:text-gray transition-all text-sm md:text-base"
               >
                 Hotels
               </Link>
@@ -137,46 +137,46 @@ const Header = () => {
           </div>
 
           {/* Right Side (User Options) */}
-          <div className="flex items-center gap-6">
-            <div>
+          <div className="flex items-center gap-4 sm:gap-4 md:gap-6 flex-wrap justify-end">
+            <div className="flex-shrink-0">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <div className="flex items-center gap-2 cursor-pointer">
-                    <div className="w-7 h-7 rounded-full overflow-hidden">
+                  <button className="flex items-center sm:border-none gap-1 sm:gap-2 cursor-pointer hover:opacity-70 transition-opacity p-1.5 sm:p-2 rounded-md hover:bg-grey-50 active:bg-grey-100">
+                    <div className="w-5 h-5 sm:w-6 sm:h-6  overflow-hidden flex-shrink-0 ">
                       <img
                         src={getCountryFlag(activeCountry)}
                         alt={`${activeCountry} Flag`}
                         className="w-full h-full object-cover"
                       />
                     </div>
-                    <span className="font-medium">
+                    <span className="font-medium text-xs sm:text-sm hidden sm:inline">
                       {getCurrencyCode(activeCountry)}
                     </span>
                     <Icon
                       name="keyboard_arrow_down"
-                      className="text-gray-500"
+                      className="text-gray-500 text-xs sm:text-base block sm:block"
                     />
-                  </div>
+                  </button>
                 </DropdownMenuTrigger>
 
-                <DropdownMenuContent className="w-32 border bg-white rounded-md mt-4 py-2">
-                  <div className="flex flex-col gap-1 ">
+                <DropdownMenuContent className="w-40 border bg-white rounded-md mt-2 py-2 mr-4">
+                  <div className="flex flex-col gap-1">
                     {countries.map((country) => (
                       <div
                         key={country.code}
-                        className={`flex items-center cursor-pointer hover:bg-grey-100 gap-2   p-2 ${
+                        className={`flex items-center cursor-pointer hover:bg-grey-100 gap-2 p-2 text-xs transition-colors ${
                           activeCountry === country.name ? "bg-grey-200" : ""
                         }`}
                         onClick={() => setActiveCountry(country.name)}
                       >
-                        <div className="w-6 h-6 rounded-full overflow-hidden">
+                        <div className="w-5 h-5 rounded-full overflow-hidden flex-shrink-0">
                           <img
                             src={country.flag}
                             alt={`${country.name} Flag`}
                             className="w-full h-full object-cover"
                           />
                         </div>
-                        <span className="text-sm font-medium">
+                        <span className="text-xs font-medium">
                           {country.code.toUpperCase()}
                         </span>
                       </div>
@@ -186,21 +186,21 @@ const Header = () => {
               </DropdownMenu>
             </div>
             {/* Notification and "List your Property" (Visible on larger screens) */}
-            <div className="hidden sm:flex items-center gap-6">
+            <div className="hidden md:flex items-center gap-4 lg:gap-6">
               <Icon
                 name="notifications"
-                className="cursor-not-allowed text-gray-500"
+                className="cursor-not-allowed text-gray-500 text-sm md:text-base"
               />
               <Link to="/list-your-property">
-                <span className="underline font-bold text-sm text-gray-dark">
+                <span className="underline font-bold text-xs md:text-sm text-gray-dark">
                   List your Property
                 </span>
               </Link>
             </div>
             {/* Auth Section */}
-            <div>
+            <div className="flex-shrink-0">
               {localStorage.getItem("token") ? (
-                <div className="w-10 h-10 border rounded-full flex bg-primary text-white font-semibold justify-center items-center">
+                <div className="w-8 sm:w-10 h-8 sm:h-10 border rounded-full flex bg-primary text-white font-semibold justify-center items-center text-xs sm:text-base">
                   <AuthDropdown
                     user={userInitials}
                     menuItems={menuItems}
@@ -210,12 +210,13 @@ const Header = () => {
               ) : (
                 <Button
                   variant="outline"
-                  className=" items-center hidden sm:flex justify-center gap-2"
+                  className="items-center hidden sm:flex justify-center gap-1 sm:gap-2 text-xs sm:text-sm py-1 sm:py-2 px-2 sm:px-4"
                   asLink
                   href="/login"
                 >
-                  <UserRound />
-                  <span>Login/Register</span>
+                  <UserRound className="w-4 h-4 sm:w-5 sm:h-5" />
+                  <span className="hidden md:inline">Login/Register</span>
+                  <span className="md:hidden">Login</span>
                 </Button>
               )}
             </div>

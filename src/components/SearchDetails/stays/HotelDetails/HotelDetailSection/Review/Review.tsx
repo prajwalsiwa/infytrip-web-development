@@ -60,11 +60,11 @@ function Review({
             )}
           </div>
         </div>
-        <div className="comments-section">
+        <div className="comments-section ">
           {comments && comments.length > 0 ? (
             <CommentSection comments={comments} />
           ) : (
-            <p className="text-gray-500">No comments available</p>
+            <p className="text-gray-500 pl-4 pt-1">No comments available</p>
           )}
         </div>
       </div>

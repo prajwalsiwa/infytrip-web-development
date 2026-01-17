@@ -27,7 +27,7 @@ function Attractions({ image, attractionList }: AttractionsProps) {
                   {detail.name}
                 </span>
                 <span className="text-gray text-sm sm:text-base">
-                  {detail.distance}
+                  {detail.distance} m
                 </span>
               </div>
             ))}

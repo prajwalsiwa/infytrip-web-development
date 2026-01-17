@@ -117,6 +117,13 @@ function HotelDetailSection({
     hotelDetails?.property_images.map((image) => image.image_url),
   ].flat();
 
+  const nearByAttractionList = hotelDetails?.nearby_attractions?.map(
+    (attraction) => ({
+      name: attraction.name,
+      distance: attraction.distance,
+    })
+  );
+
   return (
     <div className="hotel-detail-section w-full gap-6 flex flex-col ">
       <div className="flex flex-col gap-2 ">
@@ -205,7 +212,7 @@ function HotelDetailSection({
       >
         <Attractions
           image={attractionsMapData.image}
-          attractionList={attractionsMapData.attractionList}
+          attractionList={nearByAttractionList || []}
         />
       </div>
       <div

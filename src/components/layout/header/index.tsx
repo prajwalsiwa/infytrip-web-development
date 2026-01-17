@@ -18,14 +18,6 @@ import {
 } from "@radix-ui/react-dropdown-menu";
 import { useState } from "react";
 
-const menuItems = [
-  { id: 1, label: "Trips", disabled: true },
-  { id: 2, label: "Messages", disabled: true },
-  { id: 3, label: "My Reviews", disabled: true },
-  { id: 4, label: "Saved", disabled: true },
-  { id: 5, label: "Refer and Earn", disabled: true },
-];
-
 const Header = () => {
   const [searchParams] = useSearchParams();
   const [activeCountry, setActiveCountry] = useState("Nepal");
@@ -87,7 +79,7 @@ const Header = () => {
   return (
     <header
       className={cn(
-        "header sm:relative absolute sm:border sm:border-b xl:px-12 px-3 sm:px-6 w-full z-10 !bg-grey-100 shadow-md sm:shadow-none sm:!bg-transparent sm:bg-white",
+        "header sm:relative absolute sm:border sm:border-b xl:px-12 px-3 sm:px-6 w-full z-50 !bg-grey-100 shadow-md sm:shadow-none sm:!bg-transparent sm:bg-white",
         {
           "header-sticky": isScrolled,
         }
@@ -159,7 +151,10 @@ const Header = () => {
                   </button>
                 </DropdownMenuTrigger>
 
-                <DropdownMenuContent className="w-40 border bg-white rounded-md mt-2 py-2 mr-4">
+                <DropdownMenuContent
+                  className="w-40 border bg-white rounded-md mt-2 py-2 mr-4"
+                  style={{ zIndex: 9999 }}
+                >
                   <div className="flex flex-col gap-1">
                     {countries.map((country) => (
                       <div
@@ -203,7 +198,6 @@ const Header = () => {
                 <div className="w-8 sm:w-10 h-8 sm:h-10 border rounded-full flex bg-primary text-white font-semibold justify-center items-center text-xs sm:text-base">
                   <AuthDropdown
                     user={userInitials}
-                    menuItems={menuItems}
                     onMenuClick={(id) => handleMenuClick(id)}
                   />
                 </div>

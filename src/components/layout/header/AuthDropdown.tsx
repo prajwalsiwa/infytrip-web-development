@@ -14,7 +14,7 @@ import { useNavigate } from "react-router-dom";
 
 interface AuthDropdownProps {
   user: string | null;
-  menuItems: { id: number; label: string; disabled: boolean }[];
+  menuItems?: { id: number; label: string; disabled: boolean }[];
   onMenuClick: (id: number) => void;
 }
 
@@ -38,13 +38,13 @@ function AuthDropdown({ user, menuItems, onMenuClick }: AuthDropdownProps) {
             {user}
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-40 mr-28 mt-2 overflow-hidden rounded-lg bg-white text-gray-dark font-normal flex flex-col z-10 border">
+        <DropdownMenuContent className="w-40 sm:mr-12 mr-2 mt-2 overflow-hidden rounded-lg bg-white text-gray-dark font-normal flex flex-col z-10 border">
           <DropdownMenuLabel className="pt-2 px-3 pb-1 hover:bg-grey-100 h-10 flex items-center cursor-not-allowed">
             My Account
           </DropdownMenuLabel>
-          <DropdownMenuSeparator className="border-b-[0.5px] border-grey-300" />
+          <DropdownMenuSeparator className="border-b mx-1" />
           <DropdownMenuGroup className="flex flex-col">
-            {menuItems.map(({ id, label, disabled }) => (
+            {menuItems?.map(({ id, label, disabled }) => (
               <DropdownMenuItem
                 key={id}
                 className={`cursor-pointer hover:bg-grey-100 px-3 h-10 flex items-center ${
@@ -56,9 +56,8 @@ function AuthDropdown({ user, menuItems, onMenuClick }: AuthDropdownProps) {
               </DropdownMenuItem>
             ))}
           </DropdownMenuGroup>
-          <DropdownMenuSeparator className="border-b-[0.5px] border-grey-300" />
           <DropdownMenuItem
-            className="p-1 px-3 pb-3 hover:bg-grey-100 overflow-hidden cursor-pointer"
+            className="p-1 px-3 pb-3 py-2 overflow-hidden cursor-pointer"
             onClick={handleLogout}
           >
             <span>Log out</span>

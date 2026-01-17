@@ -27,10 +27,7 @@ const ImageSection: React.FC<ImageSectionProps> = ({
       {/* Subimages Section */}
       <div className="grid grid-cols-2 md:grid-cols-2 gap-1 w-full sm:rounded-tr-2xl sm:rounded-tb-2xl overflow-hidden">
         {subImages?.map((subImage, index) => (
-          <div
-            key={index}
-            className="w-full h-[9.479375rem] overflow-hidden"
-          >
+          <div key={index} className="w-full h-[9.479375rem] overflow-hidden">
             <img
               src={subImage.src}
               alt={defaultAltText}

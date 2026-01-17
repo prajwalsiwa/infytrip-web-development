@@ -24,6 +24,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 
 import { MutableRefObject } from "react";
+import { Skeleton } from "@/components/ui/Skeleton";
 
 function HotelDetailSection({
   refs,
@@ -35,9 +36,11 @@ function HotelDetailSection({
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const params = useParams();
-  const { data: hotelDetails } = useHotelDetailsQuery(Number(params?.id)) as {
-    data: HotelDetails | undefined;
-  };
+  const { data: hotelDetails, isLoading: hotelDetailsLoading } =
+    useHotelDetailsQuery(Number(params?.id)) as {
+      data: HotelDetails | undefined;
+      isLoading: boolean;
+    };
 
   const {
     data: recommendations,
@@ -46,6 +49,8 @@ function HotelDetailSection({
   } = useGetHotelRecommendationsQuery();
 
   const { data: trendList, isLoading, error } = useGetTrendsQuery();
+
+  if (hotelDetailsLoading) <div>Loading...</div>;
 
   if (isLoading) <div>Loading...</div>;
   if (error) <div>Loading...</div>;
@@ -115,19 +120,28 @@ function HotelDetailSection({
   return (
     <div className="hotel-detail-section w-full gap-6 flex flex-col ">
       <div className="flex flex-col gap-2 ">
-        <HotelHeader
-          title={hotelDetails?.name || ""}
-          location={`${hotelDetails?.location.city || ""}, ${
-            hotelDetails?.location.country || ""
-          }`}
-          ratings={hotelDetails?.ratings || 0}
-          reviews={hotelDetails?.views || 0}
-        />
-        <div onClick={handleImageOpen} className="mt-6 sm:mt-0">
-          <ImageSection
-            mainImageSrc={hotelDetails?.photo_url || ""}
-            subImages={subImages || []}
+        {hotelDetailsLoading ? (
+          <Skeleton className="w-full h-8 md:h-12" />
+        ) : (
+          <HotelHeader
+            title={hotelDetails?.name || ""}
+            location={`${hotelDetails?.location.city || ""}, ${
+              hotelDetails?.location.country || ""
+            }`}
+            ratings={hotelDetails?.ratings || 0}
+            reviews={hotelDetails?.views || 0}
           />
+        )}
+
+        <div onClick={handleImageOpen} className="mt-6 sm:mt-0">
+          {hotelDetailsLoading ? (
+            <Skeleton className="w-full h-64 md:h-96" />
+          ) : (
+            <ImageSection
+              mainImageSrc={hotelDetails?.photo_url || ""}
+              subImages={subImages || []}
+            />
+          )}
         </div>
         <div className="py-2">
           <DetailTab
@@ -142,21 +156,33 @@ function HotelDetailSection({
           if (el) refs.current[0] = el;
         }}
       >
-        <Description description={hotelDetails?.description || ""} />
+        {hotelDetailsLoading ? (
+          <Skeleton className="w-full h-48 " />
+        ) : (
+          <Description description={hotelDetails?.description || ""} />
+        )}
       </div>
       <div
         ref={(el) => {
           if (el) refs.current[1] = el;
         }}
       >
-        <Amenities amenitiesList={amenities || []} />
+        {hotelDetailsLoading ? (
+          <Skeleton className="w-full h-48 " />
+        ) : (
+          <Amenities amenitiesList={amenities || []} />
+        )}
       </div>
       <div
         ref={(el) => {
           if (el) refs.current[2] = el;
         }}
       >
-        <Rooms roomData={checkRoomDetails || []} bookRef={bookRef} />
+        {hotelDetailsLoading ? (
+          <Skeleton className="w-full h-96 " />
+        ) : (
+          <Rooms roomData={checkRoomDetails || []} bookRef={bookRef} />
+        )}
       </div>
       <div
         ref={(el) => {

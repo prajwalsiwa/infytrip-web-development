@@ -7,6 +7,7 @@ import { useCheckRoomAvailabilityMutation } from "@/redux/services/staysApi";
 import { useParams } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { tabList } from "@/lib/constants/hoteDetails";
+import { Skeleton } from "@/components/ui/Skeleton";
 
 function HotelDetails() {
   const hotelDetails = useSelector(
@@ -41,18 +42,18 @@ function HotelDetails() {
   const [availableData, setAvailableData] = useState<AvailableData | null>(
     null
   );
-  const [, setLoading] = useState(false);
+  const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        setLoading(true);
         const response = await checkRoomAvailability({
           checkin_date: formattedCheckIn,
           checkout_date: formattedCheckOut,
           property: id,
           rooms,
         }).unwrap(); // this extracts the pure data
+        setLoading(false);
 
         setAvailableData(response);
       } catch (error) {
@@ -78,17 +79,21 @@ function HotelDetails() {
   return (
     <div className="py-2 lg:grid  lg:grid-cols-[70%_30%]">
       <HotelDetailSection refs={refs} bookRef={bookRef} />
-      <div className="pl-4 lg:block hidden">
-        <BookingSection
-          bookRef={bookRef}
-          refs={refs}
-          roomId={roomId}
-          roomName={roomName}
-          roomPrice={roomPrice}
-          discountPrice={discountPrice}
-          discountPercent={discountPercent}
-        />
-      </div>
+      {isLoading ? (
+        <Skeleton className="w-full ml-4 h-96 " />
+      ) : (
+        <div className="pl-4 lg:block hidden">
+          <BookingSection
+            bookRef={bookRef}
+            refs={refs}
+            roomId={roomId}
+            roomName={roomName}
+            roomPrice={roomPrice}
+            discountPrice={discountPrice}
+            discountPercent={discountPercent}
+          />
+        </div>
+      )}
     </div>
   );
 }

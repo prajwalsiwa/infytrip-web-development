@@ -30,7 +30,7 @@ function MobileSearch({ className }: MobileSearchProps) {
 
     return `${format(checkinDate, "LLL dd")} - ${format(
       checkoutDate,
-      "LLL dd"
+      "LLL dd",
     )}`;
   }, [checkinDate, checkoutDate]);
 
@@ -55,7 +55,12 @@ function MobileSearch({ className }: MobileSearchProps) {
   const navigate = useNavigate();
 
   return (
-    <div className={cn("w-full border border-grey-300 rounded-sm py-1 px-1 mt-3", className)}>
+    <div
+      className={cn(
+        "w-full border border-grey-300 rounded-sm py-1 px-1 mt-3",
+        className,
+      )}
+    >
       <div className="flex items-center gap-2">
         <div onClick={() => navigate("/")}>
           <Icon name="arrow_back" className="text-gray-dark" />
@@ -68,7 +73,7 @@ function MobileSearch({ className }: MobileSearchProps) {
             <span className="text-gray">{locationValue || "-"}</span>
           </div>
 
-          <div className="flex w-fit">
+          <div className="flex w-fit flex-wrap">
             {/* Dates */}
             <div className="w-64">
               <div className="w-full flex items-center px-2">

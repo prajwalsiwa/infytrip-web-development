@@ -9,7 +9,7 @@ import { DateRange } from "react-day-picker";
 function MobileSearch() {
   const [selectedValue, setSelectedValue] = useState("");
   const [guestValues, setGuestValues] = useState({
-    adults: 2,
+    adults: 0,
     children: 0,
     infants: 0,
   });

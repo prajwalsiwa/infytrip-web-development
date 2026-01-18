@@ -80,7 +80,7 @@ function RoomsCard({
     const checkout = new Date(checkoutParam);
     const nights = Math.max(
       (checkout.getTime() - checkin.getTime()) / (1000 * 60 * 60 * 24),
-      1
+      1,
     );
     return nights;
   }, [checkinParam, checkoutParam]);
@@ -101,7 +101,7 @@ function RoomsCard({
       setNumberOfRooms({
         roomId: id,
         room: selectedRoomLength,
-      })
+      }),
     );
     bookRef.current.scrollIntoView({ behavior: "smooth" });
   };
@@ -136,7 +136,7 @@ function RoomsCard({
         setPendingBooking({
           checkin_date: checkinParam,
           checkout_date: checkoutParam,
-          property: Number(id),
+          property: Number(propertyId),
           room_details: [
             {
               room: id,
@@ -146,7 +146,7 @@ function RoomsCard({
           adults: adultsParam || 0,
           children: childrenParam || 0,
           infants: infantsParam || 0,
-        })
+        }),
       );
       navigate(`/hotel-view/checkout/${id}/login`);
     }
@@ -177,7 +177,7 @@ function RoomsCard({
 
             {/* Room Services */}
             <div className="flex gap-2 items-center">
-              <div className="service-list flex grid-rows-1 gap-2 ghandleBookap-1 items-center">
+              <div className="service-list flex flex-wrap grid-rows-1 gap-2 ghandleBookap-1 items-center">
                 {amenities?.slice(0, 6).map((amenity, index) => (
                   <div key={index} className="flex items-center">
                     <ServiceContainer service={amenity} />

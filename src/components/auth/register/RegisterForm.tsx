@@ -107,11 +107,11 @@ function RegisterForm({ isLogo = true }: RegisterFormProps) {
       navigate("/login");
 
       console.log("Account created successfully:", response);
-    } catch (error) {
+    } catch (error: any) {
       toast({
         title: "Registration Failed",
         description:
-          "There was an issue creating your account. Please try again.",
+          error?.data?.errors?.[0]?.errors || "Something went wrong.",
         variant: "destructive",
       });
       console.error("Error creating account:", error);

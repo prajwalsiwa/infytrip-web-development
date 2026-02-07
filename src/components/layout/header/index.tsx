@@ -6,7 +6,6 @@ import { useAppSelector } from "@/redux/store";
 import { Link, useSearchParams } from "react-router-dom";
 import AuthDropdown from "./AuthDropdown";
 import Icon from "@/components/ui/Icon";
-import ausFlag from "@/assets/Images/ausflag.jpeg";
 import nepalFlag from "@/assets/Images/nepalflag.png";
 import usaFlag from "@/assets/Images/usaflag.jpg";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
@@ -16,11 +15,10 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@radix-ui/react-dropdown-menu";
-import { useState } from "react";
 
 const Header = () => {
-  const [searchParams] = useSearchParams();
-  const [activeCountry, setActiveCountry] = useState("Nepal");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const currency = searchParams.get("currency") || "npr";
 
   const activeTab = searchParams.get("tab") || "stays";
   const { isScrolled } = usePageScroll(200);
@@ -51,30 +49,14 @@ const Header = () => {
       flag: nepalFlag,
     },
     {
-      name: "Australia",
-      code: "aud",
-      flag: ausFlag,
-    },
-    {
       name: "USA",
       code: "usd",
       flag: usaFlag,
     },
   ];
 
-  const getCurrencyCode = (country: string) => {
-    const countryObj = countries.find(
-      (c) => c.name.toLowerCase() === country.toLowerCase()
-    );
-    return countryObj?.code.toUpperCase() || "NPR";
-  };
-
-  const getCountryFlag = (country: string) => {
-    const countryObj = countries.find(
-      (c) => c.name.toLowerCase() === country.toLowerCase()
-    );
-    return countryObj?.flag || nepalFlag;
-  };
+  const activeCountry =
+    countries.find((c) => c.code === currency) || countries[0];
 
   return (
     <header
@@ -82,7 +64,7 @@ const Header = () => {
         "header sm:relative absolute sm:border sm:border-b xl:px-12 px-3 sm:px-6 w-full z-50 !bg-grey-100 shadow-md sm:shadow-none sm:!bg-transparent sm:bg-white",
         {
           "header-sticky": isScrolled,
-        }
+        },
       )}
     >
       <nav className="w-full">
@@ -136,13 +118,13 @@ const Header = () => {
                   <button className="flex items-center sm:border-none gap-1 sm:gap-2 cursor-pointer hover:opacity-70 transition-opacity p-1.5 sm:p-2 rounded-md hover:bg-grey-50 active:bg-grey-100">
                     <div className="w-5 h-5 sm:w-6 sm:h-6  overflow-hidden flex-shrink-0 ">
                       <img
-                        src={getCountryFlag(activeCountry)}
-                        alt={`${activeCountry} Flag`}
+                        src={activeCountry.flag}
+                        alt={`${activeCountry.name} Flag`}
                         className="w-full h-full object-cover"
                       />
                     </div>
                     <span className="font-medium text-xs sm:text-sm hidden sm:inline">
-                      {getCurrencyCode(activeCountry)}
+                      {activeCountry.code.toUpperCase()}
                     </span>
                     <Icon
                       name="keyboard_arrow_down"
@@ -160,9 +142,13 @@ const Header = () => {
                       <div
                         key={country.code}
                         className={`flex items-center cursor-pointer hover:bg-grey-100 gap-2 p-2 text-xs transition-colors ${
-                          activeCountry === country.name ? "bg-grey-200" : ""
+                          activeCountry.code === country.code
+                            ? "bg-grey-200"
+                            : ""
                         }`}
-                        onClick={() => setActiveCountry(country.name)}
+                        onClick={() => {
+                          setSearchParams({ currency: country.code });
+                        }}
                       >
                         <div className="w-5 h-5 rounded-full overflow-hidden flex-shrink-0">
                           <img

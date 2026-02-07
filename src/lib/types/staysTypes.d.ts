@@ -141,6 +141,7 @@ export interface HotelDetails {
   property_images: RoomImage[];
   special_deals: any[];
   min_room_price: number;
+  min_room_price_usd: number;
   original_price: number;
   discount_percentage: number;
   rating: Rating[];

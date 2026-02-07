@@ -5,7 +5,7 @@ import Label from "@/components/ui/FormUI/Label";
 import { setUserInfo, userInfoState } from "@/redux/features/staysSlice";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 
 interface FormData {
   name: string;
@@ -17,6 +17,8 @@ interface FormData {
 function SetDetailsForm() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const currency = searchParams.get("currency") || "npr";
   const { id } = useParams();
 
   const {
@@ -33,7 +35,7 @@ function SetDetailsForm() {
     };
 
     dispatch(setUserInfo(userInfo));
-    navigate(`../${id}/pay-with`);
+    navigate(`../${id}/pay-with?currency=${currency}`);
   };
 
   return (

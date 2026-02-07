@@ -25,24 +25,14 @@ const options = [
 function Stays() {
   const [searchParams] = useSearchParams();
   const queryParams = Object.fromEntries(searchParams.entries());
+  const currency = searchParams.get("currency") || "npr";
 
-  const {
-    data: hotelList,
-    isLoading: isHotelsLoading,
-    error: hotelError,
-  } = useHotelListQuery(queryParams);
+  const { data: hotelList, isLoading: isHotelsLoading } =
+    useHotelListQuery(queryParams);
 
-  const {
-    data: trendList,
-    isLoading: isTrendsLoading,
-    error: trendsError,
-  } = useGetTrendsQuery();
+  const { data: trendList } = useGetTrendsQuery();
 
-  const {
-    data: recommendations,
-    isLoading: isRecommendationsLoading,
-    error: recommendationsError,
-  } = useGetHotelRecommendationsQuery();
+  const { data: recommendations } = useGetHotelRecommendationsQuery();
 
   const recommendationList = recommendations?.results ?? [];
   const hotelListResults = hotelList?.results ?? [];
@@ -64,7 +54,10 @@ function Stays() {
     rating: hotel.ratings ?? 0,
     reviews: hotel.user_review_count ?? 0,
     originalPrice: hotel.original_price ?? 0,
-    discountedPrice: hotel.min_room_price ?? 0,
+    discountedPrice:
+      currency === "usd"
+        ? hotel.min_room_price_usd
+        : hotel.min_room_price ?? 0,
     discountPercent: hotel.discount_percentage
       ? Number(hotel.discount_percentage.toFixed())
       : 0,
@@ -113,8 +106,8 @@ function Stays() {
                       rating={hotel.rating}
                       reviews={hotel.reviews}
                       originalPrice={hotel.originalPrice}
-                      discountedPrice={hotel.discountedPrice}
-                      discountPercent={hotel.discountPercent}
+                      discountedPrice={hotel.discountedPrice ?? 0}
+                      discountPercent={hotel.discountPercent ?? 0}
                     />
                   ))
                 ) : (

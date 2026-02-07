@@ -4,14 +4,14 @@ import BookingSection from "@/components/SearchDetails/stays/HotelDetails/Bookin
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { useCheckRoomAvailabilityMutation } from "@/redux/services/staysApi";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { tabList } from "@/lib/constants/hoteDetails";
 import { Skeleton } from "@/components/ui/Skeleton";
 
 function HotelDetails() {
   const hotelDetails = useSelector(
-    (state: RootState) => state.stays?.hotelDetails
+    (state: RootState) => state.stays?.hotelDetails,
   );
 
   // const roomPrice = hotelDetails && hotelDetails?.min_room_price;
@@ -36,12 +36,17 @@ function HotelDetails() {
   }
 
   interface AvailableData {
+    property: {
+      min_room_price: number;
+      min_room_price_usd: number | null;
+    };
     room_details: RoomDetails[];
   }
 
   const [availableData, setAvailableData] = useState<AvailableData | null>(
-    null
+    null,
   );
+
   const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -66,12 +71,19 @@ function HotelDetails() {
     fetchData();
   }, [checkRoomAvailability, formattedCheckIn, formattedCheckOut, id]);
 
-  const roomPrice = availableData?.room_details?.[0]?.room?.price ?? 0;
+  const [searchParams] = useSearchParams();
+  const currency = searchParams.get("currency") || "npr";
+
+  const roomPrice =
+    currency === "usd"
+      ? availableData?.property?.min_room_price_usd
+      : availableData?.property?.min_room_price;
+
   const roomName = availableData?.room_details?.[0]?.room?.name ?? "";
   const roomId = availableData?.room_details?.[0]?.room?.id ?? null;
 
   const refs = useRef<(HTMLDivElement | null)[]>(
-    new Array(tabList.length).fill(null)
+    new Array(tabList.length).fill(null),
   );
 
   const bookRef = useRef(null);

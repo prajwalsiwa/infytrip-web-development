@@ -3,7 +3,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useCompleteBookingMutation } from "@/redux/services/staysApi";
 import { RootState } from "@/redux/store";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useState } from "react";
 import Icon from "@/components/ui/Icon";
 
@@ -13,6 +13,8 @@ interface HotelPayProps {
 
 function HotelPay({ prePayAmount }: HotelPayProps) {
   const bookId = localStorage.getItem("bookId");
+  const [searchParams] = useSearchParams();
+  const currency = searchParams.get("currency") || "NPR";
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [completeBooking] = useCompleteBookingMutation();
@@ -38,7 +40,7 @@ function HotelPay({ prePayAmount }: HotelPayProps) {
         variant: "success",
       });
       setIsLoading(false);
-      navigate(`../${bookId}/booking-confirmed`);
+      navigate(`../${bookId}/booking-confirmed?currency=${currency}`);
     } catch (error) {
       setIsLoading(false);
       console.error("Error", error);

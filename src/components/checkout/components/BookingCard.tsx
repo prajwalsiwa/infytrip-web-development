@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 
 interface HotelDetails {
   image: string;
@@ -50,8 +50,11 @@ type BookingDetails = {
 
 function BookingCard({ hotelDetails }: BookingCardProps) {
   const [bookingDetails, setBookingDetails] = useState<BookingDetails | null>(
-    null
+    null,
   );
+
+  const [searchParams] = useSearchParams();
+  const currency = searchParams.get("currency") || "npr";
 
   const { pathname } = useLocation();
 
@@ -61,28 +64,29 @@ function BookingCard({ hotelDetails }: BookingCardProps) {
     pathname?.includes("package") && localStorage.getItem("packageCard");
 
   useEffect(() => {
-    if (packageCard) {
-      const packageCardObj = JSON.parse(packageCard);
-      const packageCardDetail = {
-        id: packageCardObj.id,
-        name: packageCardObj.name,
-        location: packageCardObj.location,
-        rating: packageCardObj.rating,
-        reviews: packageCardObj.reviews,
-        image: packageCardObj.image,
-        dates: packageCardObj.date,
-        guests: packageCardObj.noOfPackage,
-        totalPrice: packageCardObj.totalPrice,
-        roomType: "Package",
-        noOfRooms: packageCardObj.noOfPackage,
-      };
-      setBookingDetails(packageCardDetail);
-    } else {
-      const storedDetails = localStorage.getItem("bookingCardDetails");
-      if (storedDetails) {
-        setBookingDetails(JSON.parse(storedDetails));
-      }
+    // if (packageCard) {
+    //   const packageCardObj = JSON.parse(packageCard);
+    //   console.log(packageCardObj, "packageCardObj");
+    //   const packageCardDetail = {
+    //     id: packageCardObj.id,
+    //     name: packageCardObj.name,
+    //     location: packageCardObj.location,
+    //     rating: packageCardObj.rating,
+    //     reviews: packageCardObj.reviews,
+    //     image: packageCardObj.image,
+    //     dates: packageCardObj.date,
+    //     guests: packageCardObj.noOfPackage,
+    //     totalPrice: packageCardObj.totalPrice,
+    //     roomType: "Package",
+    //     noOfRooms: packageCardObj.noOfPackage,
+    //   };
+    //   setBookingDetails(packageCardDetail);
+    // } else {
+    const storedDetails = localStorage.getItem("bookingCardDetails");
+    if (storedDetails) {
+      setBookingDetails(JSON.parse(storedDetails));
     }
+    // }
   }, [packageCard]);
 
   const calculateDaysFromRange = (dateRange: string) => {
@@ -107,7 +111,7 @@ function BookingCard({ hotelDetails }: BookingCardProps) {
 
     const formattedStart = new Date(startDate).toLocaleDateString(
       "en-US",
-      options
+      options,
     );
     const formattedEnd = new Date(endDate).toLocaleDateString("en-US", options);
 
@@ -117,8 +121,8 @@ function BookingCard({ hotelDetails }: BookingCardProps) {
   const nights = isPackage
     ? 1
     : bookingDetails?.dates
-    ? calculateDaysFromRange(bookingDetails.dates)
-    : 0;
+      ? calculateDaysFromRange(bookingDetails.dates)
+      : 0;
 
   return (
     <div className="w-full p-8 border rounded-xl shadow-lg bg-white">
@@ -180,10 +184,7 @@ function BookingCard({ hotelDetails }: BookingCardProps) {
             {bookingDetails?.roomType} {" x"} {bookingDetails?.noOfRooms}
           </span>
           <span className="font-medium">
-            {isPackage
-              ? bookingDetails?.totalPrice &&
-                bookingDetails?.totalPrice / bookingDetails?.noOfRooms
-              : bookingDetails?.roomPrice}{" "}
+            {currency === "usd" ? "$" : "Rs."} {bookingDetails?.roomPrice}{" "}
           </span>
         </div>
       </div>
@@ -194,7 +195,7 @@ function BookingCard({ hotelDetails }: BookingCardProps) {
           <span>Total</span>
           <span className="text-2xl text-primary-dark flex  gap-2">
             <p className="text-gray-dark flex justify-end text-lg mt-0.5">
-              {"Rs."}
+              {currency === "usd" ? "$" : "Rs."}
             </p>
             {bookingDetails?.totalPrice}
           </span>

@@ -8,7 +8,7 @@ interface PriceSectionProps {
   rating: number;
   reviews: number;
   originalPrice: number;
-  discountedPrice: number;
+  discountedPrice?: number;
   discountPercent?: number;
 }
 
@@ -22,6 +22,7 @@ const PriceSection: React.FC<PriceSectionProps> = ({
 }) => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const currency = searchParams.get("currency") || "npr";
 
   const handleClick = () => {
     // Navigate based on the availability check
@@ -68,11 +69,11 @@ const PriceSection: React.FC<PriceSectionProps> = ({
             <div className="flex items-center gap-1  justify-end">
               {originalPrice !== 0 && (
                 <span className="text-grey-700 line-through  w-[73px]  text-md font-bold">
-                  Rs. {originalPrice}
+                  {/* Rs. {originalPrice} */}
                 </span>
               )}
               <span className="text-primary-dark text-xl w-[6rem] font-bold">
-                Rs. {discountedPrice}
+                {currency === "usd" ? "$" : "Rs."} {discountedPrice}
               </span>
             </div>
             <span className="text-gray-light w-full justify-end flex">

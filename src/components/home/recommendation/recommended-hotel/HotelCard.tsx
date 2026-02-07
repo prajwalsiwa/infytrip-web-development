@@ -1,4 +1,5 @@
 // import { getDiscountedPrice } from "@/lib/utils/pricing";
+import { showCurrency } from "@/lib/utils/common";
 import { Hotel } from "@/redux/services/homeApi";
 import { StarFilledIcon } from "@radix-ui/react-icons";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
@@ -15,22 +16,33 @@ const HotelCard = ({
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const activeTab = searchParams.get("tab") || "stays";
+  const currency = searchParams.get("currency") || "npr";
+
   const handleCardClick = () => {
     // COMMENTED OUT FOR PRE-LAUNCH (STAYS ONLY)
     // if (isPackage) {
     //   navigate(`/search/package-view/${data.id}?tab=${activeTab}`);
     // } else {
-    navigate(`/search/hotel-view/${data.id}?tab=${activeTab}`);
+    navigate(
+      `/search/hotel-view/${data.id}?tab=${activeTab}&currency=${currency}`,
+    );
     // }
   };
 
   return (
     <button
       type="button"
-      className={"w-full overflow-hidden hover:border-2 hover:border-primary rounded-lg" + className}
+      className={
+        "w-full overflow-hidden hover:border-2 hover:border-primary rounded-lg" +
+        className
+      }
       onClick={handleCardClick}
     >
-      <div className={"bg-white !w-full shadow-md rounded-md cursor-pointer "+ className}>
+      <div
+        className={
+          "bg-white !w-full shadow-md rounded-md cursor-pointer " + className
+        }
+      >
         {/* Image Container */}
         <figure className="relative !w-full">
           <img
@@ -80,16 +92,11 @@ const HotelCard = ({
 
           {/* Hotel pricing info */}
           <div className="mt-2 flex justify-start items-center">
-            <span className="text-gray text-xs line-through">
+            {/* <span className="text-gray text-xs line-through">
               Rs. {data.original_price}
-            </span>
+            </span> */}
             <span className="text-base text-gray-dark ml-2">
-              Rs.{""}
-              {/* {getDiscountedPrice({
-                price: data?.original_price || 0,
-                discountPercent: data.discount_percentage,
-              })} */}
-              {data?.min_room_price}
+              {showCurrency(currency, data)}
             </span>
             {isPackage ? (
               <span className="text-xs text-gray">/person</span>

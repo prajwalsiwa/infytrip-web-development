@@ -23,7 +23,7 @@ import Icon from "@/components/ui/Icon";
 interface BookingProps {
   roomId: number | null;
   roomName: string;
-  roomPrice: number;
+  roomPrice?: number | null;
   discountPercent: number | null;
   discountPrice: number | null;
   refs: any;
@@ -40,11 +40,12 @@ function BookingSection({
   discountPrice,
 }: BookingProps) {
   const { room_details } = useSelector(
-    (state: RootState) => state.stays?.availableRooms || 0
+    (state: RootState) => state.stays?.availableRooms || 0,
   );
   // const { toast } = useToast();
 
   const [searchParams] = useSearchParams();
+  const currency = searchParams.get("currency") || "npr";
 
   const noOfRooms = useSelector((state: RootState) => state.stays?.rooms);
 
@@ -65,7 +66,7 @@ function BookingSection({
   // console.log(noOfRooms);
 
   const roomDetail = room_details?.find(
-    (detail: any) => detail.room.id === noOfRooms.roomId
+    (detail: any) => detail.room.id === noOfRooms.roomId,
   );
 
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
@@ -74,7 +75,7 @@ function BookingSection({
   });
 
   const hotelDetails = useSelector(
-    (state: RootState) => state.stays?.hotelDetails
+    (state: RootState) => state.stays?.hotelDetails,
   );
 
   const dispatch = useDispatch();
@@ -159,7 +160,7 @@ function BookingSection({
         children: guestValues?.children || 0,
         infants: guestValues?.infants || 0,
       }).unwrap();
-      navigate(`/hotel-view/checkout/${id}/set-details`);
+      navigate(`/hotel-view/checkout/${id}/set-details?currency=${currency}`);
     } else {
       dispatch(
         setPendingBooking({
@@ -175,9 +176,9 @@ function BookingSection({
           adults: guestValues?.adults || 0,
           children: guestValues?.children || 0,
           infants: guestValues?.infants || 0,
-        })
+        }),
       );
-      navigate(`/hotel-view/checkout/${id}/login`);
+      navigate(`/hotel-view/checkout/${id}/login?currency=${currency}`);
     }
   };
 
@@ -187,7 +188,10 @@ function BookingSection({
     image: hotelDetails?.photo_url,
     dates: `${selectedDates.checkin_date} to ${selectedDates.checkout_date}`,
     guests: guestValues.adults + guestValues.children + guestValues.infants,
-    roomPrice: hotelDetails?.min_room_price || roomPrice,
+    roomPrice:
+      currency === "usd"
+        ? hotelDetails?.min_room_price_usd
+        : hotelDetails?.min_room_price || roomPrice,
     totalPrice:
       selectedDates.checkin_date &&
       selectedDates.checkout_date &&
@@ -198,7 +202,7 @@ function BookingSection({
             (new Date(selectedDates.checkout_date).getTime() -
               new Date(selectedDates.checkin_date).getTime()) /
               (1000 * 60 * 60 * 24),
-            1
+            1,
           )
         : 0,
     roomType: roomDetail?.room?.name || roomName,
@@ -207,7 +211,7 @@ function BookingSection({
 
   localStorage.setItem(
     "bookingCardDetails",
-    JSON.stringify(bookingCardDetails)
+    JSON.stringify(bookingCardDetails),
   );
 
   const totalPrice =
@@ -218,7 +222,7 @@ function BookingSection({
           (new Date(selectedDates.checkout_date).getTime() -
             new Date(selectedDates.checkin_date).getTime()) /
             (1000 * 60 * 60 * 24),
-          1
+          1,
         )
       : 0;
 
@@ -234,10 +238,10 @@ function BookingSection({
               <span className="text-gray-dark">from</span>
 
               <span className="actual-price text-primary-dark font-semibold text-xl">
-                Rs {roomPrice && roomPrice}
+                {currency === "usd" ? `$${roomPrice}` : `Rs ${roomPrice}`}
               </span>
               <span className="previous-price text-gray line-through text-sm font-medium">
-                Rs. {discountPrice}
+                {discountPrice}
               </span>
               <span className="text-gray-dark">
                 {discountPercent?.toFixed(1)}% off
@@ -287,7 +291,7 @@ function BookingSection({
               </span>
 
               <span className="price">
-                Rs.{" "}
+                {currency === "usd" ? "$" : "Rs."}
                 {roomDetail?.room?.price > 0
                   ? roomDetail.room.price
                   : roomPrice}
@@ -299,7 +303,7 @@ function BookingSection({
       <div className="flex justify-between items-center py-4">
         <span className="text-lg">Total</span>
         <span className="text-xl text-sky-700 font-semibold ">
-          Rs. {totalPrice}
+          {currency === "usd" ? `$${totalPrice}` : `Rs ${totalPrice}`}
         </span>
       </div>
       {!isCheckout && totalPrice != 0 && (

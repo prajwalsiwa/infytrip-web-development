@@ -42,6 +42,7 @@ function RoomsCard({
 }: RoomsCardProps) {
   const dispatch = useDispatch();
   const [searchParams] = useSearchParams();
+  const currency = searchParams.get("currency") || "npr";
 
   const navigate = useNavigate();
 
@@ -222,11 +223,11 @@ function RoomsCard({
           </div>
           <div className="flex items-center gap-3">
             <span className="text-[1.37rem] font-bold text-primary-dark">
-              Rs. {totalPrice.toFixed(0)}
+              {currency === "usd" ? `$${totalPrice.toFixed(0)}` : `Rs ${totalPrice.toFixed(0)}`}
             </span>
             {discountedPrice && (
               <span className="text-grey-600 !text-lg font-medium line-through">
-                Rs. {discountedPrice}
+                {/* {currency === "usd" ? `$${discountedPrice}` : `Rs ${discountedPrice}`} */}
               </span>
             )}
           </div>

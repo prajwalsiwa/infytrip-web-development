@@ -36,6 +36,7 @@ export type Hotel = {
   ratings?: number;
   user_review_count?: number;
   min_room_price?: number;
+  min_room_price_usd?: number;
   original_price?: number;
   discount_percentage: number;
   is_favourite?: boolean;
@@ -70,7 +71,10 @@ export const homeApi = rootApi.injectEndpoints({
       }),
     }),
 
-    getHotelRecommendations: builder.query<HotelRecommendationsResponse, void>({
+    getHotelRecommendations: builder.query<
+      HotelRecommendationsResponse,
+      void
+    >({
       query: () => ({
         url: "/recommendation/properties/",
         method: "GET",
@@ -87,4 +91,8 @@ export const homeApi = rootApi.injectEndpoints({
   }),
 });
 
-export const { useGetTrendsQuery, useGetHotelRecommendationsQuery, useNameSuggestionsQuery } = homeApi;
+export const {
+  useGetTrendsQuery,
+  useGetHotelRecommendationsQuery,
+  useNameSuggestionsQuery,
+} = homeApi;

@@ -29,4 +29,12 @@ const convertFileToBase64 = (file: File): Promise<string> => {
   });
 };
 
-export { convertFileToBase64 };
+const showCurrency = (currency: string, data: any) => {
+  if (currency === "usd") {
+    return "$" + " " + data?.min_room_price_usd || "-";
+  } else {
+    return "Rs." + " " + data?.min_room_price || "-";
+  }
+};
+
+export { convertFileToBase64, showCurrency };

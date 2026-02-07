@@ -2,6 +2,7 @@
 import { formatDateToMonthYear } from "@/lib/utils/common";
 import RoomsCard from "./RoomsCard";
 import Icon from "@/components/ui/Icon";
+import { useSearchParams } from "react-router-dom";
 
 interface RoomsProps {
   roomData: any;
@@ -9,6 +10,8 @@ interface RoomsProps {
 }
 
 function Rooms({ roomData, bookRef }: RoomsProps) {
+  const [searchParams] = useSearchParams();
+  const currency = searchParams.get("currency") || "npr";
   const convertToString = (obj: any) => {
     return Object.entries(obj)
       .map(([key, value]) => `${value} ${key}`)
@@ -18,7 +21,7 @@ function Rooms({ roomData, bookRef }: RoomsProps) {
   const roomDetails = roomData?.room_details?.map((room: any) => ({
     id: room?.room.id,
     roomName: room?.room.name,
-    price: room?.room.price,
+    price: currency === "usd" ? room?.room.price_usd : room?.room.price,
     amenities: room?.room?.amenities?.map((amenity: any) => amenity.title),
     services: [
       {

@@ -1,5 +1,4 @@
 // import { getDiscountedPrice } from "@/lib/utils/pricing";
-import { showCurrency } from "@/lib/utils/common";
 import { Hotel } from "@/redux/services/homeApi";
 import { StarFilledIcon } from "@radix-ui/react-icons";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
@@ -28,6 +27,11 @@ const HotelCard = ({
     );
     // }
   };
+
+  const price =
+    currency === "usd" ? data.min_room_price_usd : data.min_room_price;
+
+  const displayPrice = price ?? "-";
 
   return (
     <button
@@ -96,7 +100,9 @@ const HotelCard = ({
               Rs. {data.original_price}
             </span> */}
             <span className="text-base text-gray-dark ml-2">
-              {showCurrency(currency, data)}
+              {currency === "usd"
+                ? "$" + " " + displayPrice
+                : "Rs." + " " + displayPrice}
             </span>
             {isPackage ? (
               <span className="text-xs text-gray">/person</span>

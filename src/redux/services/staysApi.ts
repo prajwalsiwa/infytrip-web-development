@@ -29,7 +29,7 @@ export const staysApi = rootApi.injectEndpoints({
             console.error("Error fetching trends:", error);
           }
         },
-      }
+      },
     ),
     hotelDetails: builder.query<HotelDetails, number>({
       query: (hotelId) => ({
@@ -74,8 +74,9 @@ export const staysApi = rootApi.injectEndpoints({
         adults,
         children,
         infants,
+        currency,
       }) => ({
-        url: `/booking/`,
+        url: `/booking?currency=${currency}`,
         method: "POST",
         body: {
           checkin_date,
@@ -109,8 +110,9 @@ export const staysApi = rootApi.injectEndpoints({
         coupon_code,
         referral_earn_point,
         user_info,
+        currency,
       }) => ({
-        url: `/booking/${bookingId}/complete-booking/`,
+        url: `/booking/${bookingId}/complete-booking?currency=${currency}`,
         method: "POST",
         body: {
           payment_method,
@@ -123,9 +125,12 @@ export const staysApi = rootApi.injectEndpoints({
       }),
     }),
 
-    getCompleteBooking: builder.query({
-      query: (bookingId) => ({
-        url: `/booking/${bookingId}/`,
+    getCompleteBooking: builder.query<
+      any,
+      { bookingId: string; currency?: string }
+    >({
+      query: ({ bookingId, currency }) => ({
+        url: `/booking/${bookingId}${currency ? `?currency=${currency}` : ""}`,
         method: "GET",
       }),
       onQueryStarted: async (_, { dispatch, queryFulfilled }) => {

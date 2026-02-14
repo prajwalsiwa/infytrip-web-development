@@ -33,6 +33,7 @@ function HotelPay({ prePayAmount }: HotelPayProps) {
         coupon_code: null,
         referral_earn_point: null,
         user_info: userInfo,
+        currency,
       }).unwrap();
       toast({
         title: "Booking Confirmed",

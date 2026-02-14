@@ -8,13 +8,12 @@ import {
 } from "@/redux/services/authApi";
 import infytripLogo from "@/assets/Images/infytripLogo.png";
 import googleLogo from "@/assets/Images/google_logo.png";
-// import facebookLogo from "@/assets/Images/logo_facebook.png";
 import Label from "../../ui/FormUI/Label";
 import Input from "../../ui/FormUI/Input";
 import { Button } from "../../ui/button";
 import { useEffect, useState } from "react";
 import Icon from "../../ui/Icon";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useContinueBookingMutation } from "@/redux/services/staysApi";
 import { RootState, useAppSelector } from "@/redux/store";
@@ -49,6 +48,8 @@ function LoginForm({ isLogo = true }: LoginFormProps) {
 
   const [continueBooking] = useContinueBookingMutation();
   const [packageBooking] = usePackageBookingMutation();
+  const [searchParams] = useSearchParams();
+  const currency = searchParams.get("currency") || "npr";
 
   const hotelBookingDetails = useSelector(
     (state: RootState) => state.stays?.pendingBooking
@@ -74,12 +75,12 @@ function LoginForm({ isLogo = true }: LoginFormProps) {
       if (pathname.includes("checkout")) {
         if (pathname.includes("hotel")) {
           await continueBooking(hotelBookingDetails);
-          navigate(`../${id}/set-details`);
+          navigate(`../${id}/set-details?currency=${currency}`);
         } else if (pathname.includes("package")) {
           if (packageContinueBookingBody) {
             packageBooking(packageContinueBookingBody).unwrap();
 
-            navigate(`../${id}/set-details`);
+            navigate(`../${id}/set-details?currency=${currency}`);
           } else {
             console.error("Package booking body is missing");
           }

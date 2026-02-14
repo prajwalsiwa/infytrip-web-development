@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import BookingConfirmation from "@/components/checkout/components/BookingConfirmation";
 import { useGetCompleteBookingQuery } from "@/redux/services/staysApi";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { format } from "date-fns";
 
 interface Booking {
@@ -102,7 +102,12 @@ function BookingConfirmed() {
   const { id } = useParams();
 
   const [bookDetail, setBookDetail] = useState<Booking | null>(null);
-  const { data, isLoading, error, refetch } = useGetCompleteBookingQuery(id);
+  const [searchParams] = useSearchParams();
+  const currency = searchParams.get("currency") || "npr";
+  const { data, isLoading, error, refetch } = useGetCompleteBookingQuery({
+    bookingId: id!,
+    currency,
+  });
 
   useEffect(() => {
     if (data) {
@@ -128,7 +133,7 @@ function BookingConfirmed() {
       image: bookDetail?.property?.photo_url,
       stayPeriod: `${format(
         new Date(bookDetail?.checkin_date),
-        "MMMM dd"
+        "MMMM dd",
       )} - ${format(new Date(bookDetail?.checkout_date), "MMMM dd")}`,
       guests: bookDetail?.adults + bookDetail?.children,
     },

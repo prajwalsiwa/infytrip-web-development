@@ -25,7 +25,6 @@ const Payments: React.FC = () => {
 
   const [amount, setAmount] = useState<number>(0);
   const userInfo = useSelector((state: RootState) => state.stays?.userInfo);
-
   // COMMENTED OUT FOR PRE-LAUNCH (STAYS ONLY)
   // const isPackage = pathname.includes("package");
   const tabData = [

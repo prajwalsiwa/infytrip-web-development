@@ -31,6 +31,7 @@ import Header from "@/components/layout/header";
 import TopDeals from "@/components/home/Deals/TopDeals";
 import HotelDealsList from "@/components/home/Deals/HotelDeals/HotelDealsList";
 import MapView from "./MapView";
+import VerificationPage from "@/pages/auth/VerificationPage";
 
 export const routes: RouteObject[] = [
   {
@@ -75,6 +76,10 @@ export const routes: RouteObject[] = [
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: '/verify',
+    element: <VerificationPage />
   },
   {
     path: "/sign-up",

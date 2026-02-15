@@ -11,7 +11,7 @@ export const authApi = rootApi.injectEndpoints({
     >({
       query: (credentials) => {
         const basicAuth = btoa(
-          `${credentials.username}:${credentials.password}`
+          `${credentials.username}:${credentials.password}`,
         );
         return {
           url: "/auth/login/",
@@ -122,6 +122,51 @@ export const authApi = rootApi.injectEndpoints({
         }
       },
     }),
+    verifyEmail: builder.mutation<
+      {
+        email: string;
+        otp: string;
+      },
+      {
+        email: string;
+        otp: string;
+      }
+    >({
+      query: (credentials) => {
+        return {
+          url: "auth/otp/verify/",
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: {
+            email: credentials.email,
+            otp: credentials.otp,
+          },
+        };
+      },
+    }),
+    resendOtp: builder.mutation<
+      {
+        email: string;
+      },
+      {
+        email: string;
+      }
+    >({
+      query: (credentials) => {
+        return {
+          url: "auth/otp/resend/",
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: {
+            email: credentials.email,
+          },
+        };
+      },
+    }),
   }),
 });
 
@@ -131,4 +176,6 @@ export const {
   useRegisterMutation,
   useLazyAuthUserProfileQuery,
   useGoogleAuthMutation,
+  useVerifyEmailMutation,
+  useResendOtpMutation,
 } = authApi;

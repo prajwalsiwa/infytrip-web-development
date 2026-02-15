@@ -86,27 +86,18 @@ function RegisterForm({ isLogo = true }: RegisterFormProps) {
     email: any;
     confirm_password: any;
   }) => {
-    console.log(data);
-
     try {
       const { password, full_name, email, confirm_password } = data;
 
-      const response = await registerAuth({
+      await registerAuth({
         password,
         full_name,
         email,
         confirm_password,
         username: "",
       }).unwrap();
-      toast({
-        title: "Account Created",
-        description:
-          "Your account has been successfully created. Please log in.",
-        variant: "success",
-      });
-      navigate("/login");
 
-      console.log("Account created successfully:", response);
+      navigate("/verify", { state: { email: email } });
     } catch (error: any) {
       toast({
         title: "Registration Failed",
@@ -114,7 +105,6 @@ function RegisterForm({ isLogo = true }: RegisterFormProps) {
           error?.data?.errors?.[0]?.errors || "Something went wrong.",
         variant: "destructive",
       });
-      console.error("Error creating account:", error);
     }
   };
 

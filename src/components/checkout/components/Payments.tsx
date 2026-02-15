@@ -21,9 +21,7 @@ import { RootState } from "@/redux/store";
 // import PackageHotelPay from "../PackageCheckout/PackageHotelPay";
 
 const Payments: React.FC = () => {
-  const bookingDetails = useSelector(
-    (state: RootState) => state.stays?.bookingDetail
-  );
+  const bookId = localStorage.getItem("bookId");
 
   const [amount, setAmount] = useState<number>(0);
   const userInfo = useSelector((state: RootState) => state.stays?.userInfo);
@@ -51,7 +49,7 @@ const Payments: React.FC = () => {
     {
       value: "esewa",
       imgSrc: esewaLogo,
-      content: <EsewaPay payingAmount={bookingDetails?.total_amount} />,
+      content: <EsewaPay bookingId={Number(bookId)} />,
     },
     {
       value: "khalti",

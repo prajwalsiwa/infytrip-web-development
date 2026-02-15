@@ -76,7 +76,7 @@ export const staysApi = rootApi.injectEndpoints({
         infants,
         currency,
       }) => ({
-        url: `/booking?currency=${currency}`,
+        url: `/booking/?currency=${currency}`,
         method: "POST",
         body: {
           checkin_date,
@@ -112,7 +112,7 @@ export const staysApi = rootApi.injectEndpoints({
         user_info,
         currency,
       }) => ({
-        url: `/booking/${bookingId}/complete-booking?currency=${currency}`,
+        url: `/booking/${bookingId}/complete-booking/?currency=${currency}`,
         method: "POST",
         body: {
           payment_method,
@@ -130,7 +130,7 @@ export const staysApi = rootApi.injectEndpoints({
       { bookingId: string; currency?: string }
     >({
       query: ({ bookingId, currency }) => ({
-        url: `/booking/${bookingId}${currency ? `?currency=${currency}` : ""}`,
+        url: `/booking/${bookingId}/${currency ? `?currency=${currency}` : ""}`,
         method: "GET",
       }),
       onQueryStarted: async (_, { dispatch, queryFulfilled }) => {

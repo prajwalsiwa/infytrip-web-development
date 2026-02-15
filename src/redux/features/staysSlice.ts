@@ -11,6 +11,7 @@ interface BookingState {
   adults: number;
   children: number;
   infants: number;
+  currency?: string;
 }
 
 export interface userInfoState {

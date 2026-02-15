@@ -19,7 +19,6 @@ import { RootState } from "@/redux/store";
 import { setPendingBooking } from "@/redux/features/staysSlice";
 import { DateRange } from "react-day-picker";
 import Icon from "@/components/ui/Icon";
-// import { useToast } from "@/hooks/use-toast";
 interface BookingProps {
   roomId: number | null;
   roomName: string;
@@ -42,7 +41,6 @@ function BookingSection({
   const { room_details } = useSelector(
     (state: RootState) => state.stays?.availableRooms || 0,
   );
-  // const { toast } = useToast();
 
   const [searchParams] = useSearchParams();
   const currency = searchParams.get("currency") || "npr";
@@ -62,8 +60,6 @@ function BookingSection({
   const defaultCheckout = checkoutFromParams
     ? new Date(checkoutFromParams)
     : addDays(new Date(), 2);
-
-  // console.log(noOfRooms);
 
   const roomDetail = room_details?.find(
     (detail: any) => detail.room.id === noOfRooms.roomId,
@@ -159,6 +155,7 @@ function BookingSection({
         adults: guestValues?.adults || 0,
         children: guestValues?.children || 0,
         infants: guestValues?.infants || 0,
+        currency: currency,
       }).unwrap();
       navigate(`/hotel-view/checkout/${id}/set-details?currency=${currency}`);
     } else {
@@ -176,6 +173,7 @@ function BookingSection({
           adults: guestValues?.adults || 0,
           children: guestValues?.children || 0,
           infants: guestValues?.infants || 0,
+          currency: currency,
         }),
       );
       navigate(`/hotel-view/checkout/${id}/login?currency=${currency}`);

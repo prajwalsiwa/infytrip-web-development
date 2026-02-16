@@ -46,7 +46,6 @@ const BookingConfirmation: React.FC<BookingConfirmationProps> = ({
   partiallyPaid,
   toBePaid,
 }) => {
-
   const [searchParams] = useSearchParams();
 
   const currency = searchParams.get("currency") || "npr";
@@ -140,7 +139,7 @@ const BookingConfirmation: React.FC<BookingConfirmationProps> = ({
             {fees?.map((fee, index) => (
               <li key={index} className="flex justify-between text-gray-dark">
                 <span>{fee.item}</span>
-                <span className="font-medium">{`${currency} ${fee.amount}`}</span>
+                <span className="font-medium">{`${currency === "npr" ? "Rs" : "$"} ${fee.amount}`}</span>
               </li>
             ))}
           </ul>
@@ -150,15 +149,15 @@ const BookingConfirmation: React.FC<BookingConfirmationProps> = ({
         <div className="border-b pb-4 mb-4 text-gray-800">
           <div className="flex justify-between">
             <span className="text-gray-dark font-semibold">Total</span>
-            <span className="font-bold text-primary-dark text-2xl">{`${currency} ${total}`}</span>
+            <span className="font-bold text-primary-dark text-2xl">{`${currency === "npr" ? "Rs" : "$"} ${total}`}</span>
           </div>
           <div className="flex justify-between text-gray-dark">
             <span>Partially Paid</span>
-            <span className="font-medium">{`${currency} ${partiallyPaid}`}</span>
+            <span className="font-medium">{`${currency === "npr" ? "Rs" : "$"} ${partiallyPaid}`}</span>
           </div>
           <div className="flex justify-between text-sky-dark font-semibold">
             <span className="text-gray-dark">To be Paid</span>
-            <span className="font-bold text-primary-dark text-2xl">{`${currency} ${toBePaid}`}</span>
+            <span className="font-bold text-primary-dark text-2xl">{`${currency === "npr" ? "Rs" : "$"} ${toBePaid}`}</span>
           </div>
         </div>
       </div>

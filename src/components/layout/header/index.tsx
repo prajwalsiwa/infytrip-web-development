@@ -168,10 +168,10 @@ const Header = () => {
             </div>
             {/* Notification and "List your Property" (Visible on larger screens) */}
             <div className="hidden md:flex items-center gap-4 lg:gap-6">
-              <Icon
+              {/* <Icon
                 name="notifications"
                 className="cursor-not-allowed text-gray-500 text-sm md:text-base"
-              />
+              /> */}
               <Link to="/list-your-property">
                 <span className="underline font-bold text-xs md:text-sm text-gray-dark">
                   List your Property

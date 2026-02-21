@@ -167,6 +167,55 @@ export const authApi = rootApi.injectEndpoints({
         };
       },
     }),
+    forgotPassword: builder.mutation<
+      {
+        email: string;
+        token: string;
+      },
+      {
+        email: string;
+      }
+    >({
+      query: (credentials) => {
+        return {
+          url: "auth/password-reset/",
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: {
+            email: credentials.email,
+          },
+        };
+      },
+    }),
+    setPassword: builder.mutation<
+      {
+        token: string;
+        password: string;
+        confirm_password: string;
+      },
+      {
+        token: string;
+        password: string;
+        confirm_password: string;
+      }
+    >({
+      query: (credentials) => {
+        return {
+          url: "auth/password-reset/confirm/",
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: {
+            token: credentials.token,
+            password: credentials.password,
+            confirm_password: credentials.confirm_password,
+          },
+        };
+      },
+    }),
   }),
 });
 
@@ -178,4 +227,6 @@ export const {
   useGoogleAuthMutation,
   useVerifyEmailMutation,
   useResendOtpMutation,
+  useForgotPasswordMutation,
+  useSetPasswordMutation,
 } = authApi;

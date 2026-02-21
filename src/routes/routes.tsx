@@ -89,6 +89,10 @@ export const routes: RouteObject[] = [
     path: "/forgot-password",
     element: <ForgotPassword />,
   },
+  {
+    path: "/set-password",
+    element: <SetPassword />,
+  },
 
   {
     path: "/search",

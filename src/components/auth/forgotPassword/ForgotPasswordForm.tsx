@@ -2,13 +2,27 @@ import Input from "@/components/ui/FormUI/Input";
 import infytripLogo from "@/assets/Images/infytripLogo.png";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { useForgotPasswordMutation } from "@/redux/services/authApi";
+import { useState } from "react";
+import { Loader2 } from "lucide-react";
 
 interface ForgetFormProps {
   isLogo?: boolean;
 }
 
 function ForgetPasswordForm({ isLogo }: ForgetFormProps) {
+  const [forgotPassword, { isLoading}] =
+    useForgotPasswordMutation();
+  const [email, setEmail] = useState("");
   const navigate = useNavigate();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const response = await forgotPassword({ email });
+    if (response.data) {
+      navigate("/set-password", { state: { token: response?.data?.token } });
+    }
+  };
   return (
     <div className=" px-20 flex items-center flex-col gap-7 w-full h-full  justify-center">
       <div className="gap-7 flex flex-col w-full">
@@ -22,19 +36,28 @@ function ForgetPasswordForm({ isLogo }: ForgetFormProps) {
           <span>Enter your email address, We’ll send you OTP</span>
         </div>
       </div>
-      <form className="form flex flex-col w-full gap-4">
+      <form className="form flex flex-col w-full gap-4" onSubmit={handleSubmit}>
         <div className="h-full w-full gap-3 flex flex-col">
           <div className="email flex flex-col gap-1">
             <Input
               type="email"
               id="email"
               placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="border rounded !bg-white hover:!border-primary"
             />
             <span></span>
           </div>
         </div>
-        <Button className="rounded p-7 hover:bg-sky-600">Continue</Button>
+        <Button
+          className="rounded p-7 hover:bg-sky-600"
+          type="submit"
+          disabled={isLoading}
+        >
+          Continue
+          {isLoading && <Loader2 className="animate-spin" />}
+        </Button>
       </form>
       <div className="flex gap-2 w-full justify-start ">
         <span

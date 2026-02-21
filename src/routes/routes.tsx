@@ -78,8 +78,8 @@ export const routes: RouteObject[] = [
     element: <Login />,
   },
   {
-    path: '/verify',
-    element: <VerificationPage />
+    path: "/verify",
+    element: <VerificationPage />,
   },
   {
     path: "/sign-up",
@@ -121,11 +121,7 @@ export const routes: RouteObject[] = [
     children: [
       {
         path: ":id/booking-confirmed",
-        element: (
-          <ProtectedRoute>
-            <BookingConfirmed />
-          </ProtectedRoute>
-        ),
+        element: <BookingConfirmed />,
       },
       {
         path: "",

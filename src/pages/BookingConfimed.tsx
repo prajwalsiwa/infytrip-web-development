@@ -68,6 +68,7 @@ interface UserInfo {
   name: string;
   email: string;
   mobile_number: string;
+  full_name?: string;
 }
 
 interface BookingDetail {
@@ -120,7 +121,8 @@ function BookingConfirmed() {
     bookingId: bookDetail?.booking_id,
     bookedOn: bookDetail?.booked_on,
     personalInfo: {
-      name: bookDetail?.user_info?.name,
+      name:
+        bookDetail?.user_info?.name || bookDetail?.user_info?.full_name || "",
       email: bookDetail?.user_info?.email,
       phone: bookDetail?.user_info?.mobile_number,
     },

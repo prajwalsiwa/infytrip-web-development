@@ -66,9 +66,19 @@ function SetPasswordForm({ isLogo }: SetPasswordFormProps) {
         confirm_password: retypePassword,
       }).unwrap();
 
+      toast({
+        title: "Password Set Successfully",
+        description: "You can now login with your new password.",
+        variant: "success",
+      });
+
       navigate("/login");
-    } catch (err) {
-      console.error("Set password failed", err);
+    } catch (err: any) {
+      toast({
+        title: "Set Password Failed",
+        description: err?.data?.detail || "Failed to set password",
+        variant: "destructive",
+      });
     }
   };
 

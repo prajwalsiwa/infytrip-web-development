@@ -61,7 +61,6 @@ function RegisterForm({ isLogo = true }: RegisterFormProps) {
 
         navigate("/");
       } catch (error) {
-        console.error("Google login failed", error);
         toast({
           title: "Login Failed",
           description: "Something went wrong with Google login.",

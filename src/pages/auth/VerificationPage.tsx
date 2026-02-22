@@ -12,6 +12,7 @@ import {
   useVerifyEmailMutation,
 } from "@/redux/services/authApi";
 import { useLocation, useNavigate } from "react-router-dom";
+import { toast } from "@/hooks/use-toast";
 
 interface VerificationCodeProps {
   onResend?: () => void;
@@ -92,8 +93,18 @@ const EmailVerification: React.FC<VerificationCodeProps> = ({
     try {
       await verifyEmail({ email: emailFromState, otp }).unwrap();
       setIsVerified(true);
-    } catch {
+      toast({
+        title: "Email Verified Successfully",
+        description: "You can now login with your email.",
+        variant: "success",
+      });
+    } catch (err: any) {
       setError("Invalid or expired verification code");
+      toast({
+        title: "Email Verification Failed",
+        description: err?.data?.detail || "Failed to verify email",
+        variant: "destructive",
+      });
       setCode(Array(codeLength).fill(""));
       inputRefs.current[0]?.focus();
     } finally {

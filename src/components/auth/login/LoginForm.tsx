@@ -13,14 +13,20 @@ import Input from "../../ui/FormUI/Input";
 import { Button } from "../../ui/button";
 import { useEffect, useState } from "react";
 import Icon from "../../ui/Icon";
-import { useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom";
+import {
+  useLocation,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useContinueBookingMutation } from "@/redux/services/staysApi";
 import { RootState, useAppSelector } from "@/redux/store";
 import { usePackageBookingMutation } from "@/redux/services/packagesApi";
 import { useGoogleLogin } from "@react-oauth/google";
-import { toast } from "@/hooks/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { setAuth } from "@/redux/features/authSlice";
+import { Loader2 } from "lucide-react";
 
 type LoginFormValues = {
   username: string;
@@ -32,13 +38,14 @@ interface LoginFormProps {
 
 function LoginForm({ isLogo = true }: LoginFormProps) {
   const [isPasswordVisible, setPasswordVisible] = useState(false);
-  const [login, { isLoading, error }] = useLoginMutation();
+  const [login, { isLoading }] = useLoginMutation();
   const { isAuthenticated } = useAppSelector((state) => state.auth);
   const { pathname } = useLocation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { id } = useParams();
   const [googleAuth] = useGoogleAuthMutation();
+  const { toast } = useToast();
 
   const {
     register,
@@ -52,11 +59,11 @@ function LoginForm({ isLogo = true }: LoginFormProps) {
   const currency = searchParams.get("currency") || "npr";
 
   const hotelBookingDetails = useSelector(
-    (state: RootState) => state.stays?.pendingBooking
+    (state: RootState) => state.stays?.pendingBooking,
   );
 
   const packageContinueBookingBody = useSelector(
-    (state: RootState) => state.packages.continueBookingBody
+    (state: RootState) => state.packages.continueBookingBody,
   );
   const [authUserProfile] = useLazyAuthUserProfileQuery();
 
@@ -88,9 +95,12 @@ function LoginForm({ isLogo = true }: LoginFormProps) {
       } else {
         navigate("/");
       }
-    } catch (err) {
-      // Handle login errors
-      console.error("Login failed:", err);
+    } catch (err: any) {
+      toast({
+        title: "Login Failed",
+        description: err?.data?.detail || "Failed to login",
+        variant: "destructive",
+      });
     }
   };
 
@@ -121,7 +131,7 @@ function LoginForm({ isLogo = true }: LoginFormProps) {
             token: result.access,
             expiry: "", // or null, if your reducer allows it
             groups: { id: 2, name: "user" }, // assign a safe default
-          })
+          }),
         );
 
         // Show toast
@@ -258,17 +268,9 @@ function LoginForm({ isLogo = true }: LoginFormProps) {
           className="rounded p-7 hover:bg-sky-600"
           disabled={isLoading}
         >
-          {isLoading ? "Logging in..." : "Login"}
+          Login
+          {isLoading && <Loader2 className="animate-spin" />}
         </Button>
-
-        {/* Error Handling for API Call */}
-        {error && (
-          <span className="text-red-500 text-sm">
-            {"status" in error && error.status === 401
-              ? "Invalid username or password. Please try again."
-              : "An error occurred. Please try again later."}
-          </span>
-        )}
       </form>
 
       {/* Sign Up Prompt */}
